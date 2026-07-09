@@ -1,0 +1,5 @@
+model,sMAPE,MASE,WAPE,sMAPE vs SNaive
+Naive,46.65,1.2,42.68,17.1
+Seasonal Naive,39.84,0.93,39.41,0.0
+ETS (Holt-Winters),34.22,0.71,31.02,-14.1
+Gradient Boosting,33.67,0.64,28.52,-15.5

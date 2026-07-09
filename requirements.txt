@@ -1,0 +1,11 @@
+# Core dependencies (versions used to produce the AE1 baseline results)
+pandas==3.0.1
+numpy==2.4.3
+matplotlib==3.10.8
+scikit-learn==1.8.0
+statsmodels==0.14.6
+
+# Planned for later phases (uncomment when added):
+# prophet
+# lightgbm
+# streamlit

@@ -1,0 +1,48 @@
+{
+  "rows": 14620,
+  "skus": 20,
+  "days": 731,
+  "date_start": "2024-01-01",
+  "date_end": "2025-12-31",
+  "n_features_engineered": 12,
+  "n_folds": 12,
+  "horizon_days": 7,
+  "holiday_uplift_pct": 26,
+  "best_model": "Gradient Boosting",
+  "gb_smape": 33.67,
+  "ets_smape": 34.22,
+  "snaive_smape": 39.84,
+  "naive_smape": 46.65,
+  "gb_improvement_vs_snaive_pct": 15.5,
+  "ets_improvement_vs_snaive_pct": 14.1,
+  "table": [
+    {
+      "model": "Naive",
+      "sMAPE": 46.65,
+      "MASE": 1.2,
+      "WAPE": 42.68,
+      "sMAPE vs SNaive": 17.1
+    },
+    {
+      "model": "Seasonal Naive",
+      "sMAPE": 39.84,
+      "MASE": 0.93,
+      "WAPE": 39.41,
+      "sMAPE vs SNaive": 0.0
+    },
+    {
+      "model": "ETS (Holt-Winters)",
+      "sMAPE": 34.22,
+      "MASE": 0.71,
+      "WAPE": 31.02,
+      "sMAPE vs SNaive": -14.1
+    },
+    {
+      "model": "Gradient Boosting",
+      "sMAPE": 33.67,
+      "MASE": 0.64,
+      "WAPE": 28.52,
+      "sMAPE vs SNaive": -15.5
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Office / OneDrive lock files
+~$*
+
+# Note: data/ and outputs/ are committed on purpose as reproducible evidence.
+# To keep the repo lean instead, uncomment the next two lines:
+# data/*.csv
+# outputs/*.png
