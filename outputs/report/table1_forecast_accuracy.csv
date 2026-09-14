@@ -1,0 +1,7 @@
+model,sMAPE,MASE,WAPE,bias,interval_coverage,sMAPE vs SNaive %
+Gradient Boosting,34.11,0.65,29.25,-0.29,0.97,-14.4
+ETS (Holt-Winters),34.22,0.71,31.02,-0.8,0.97,-14.1
+Seasonal Naive,39.84,0.93,39.41,0.97,0.97,0.0
+Croston,41.28,1.06,39.01,0.35,0.98,3.6
+Croston (SBA),41.73,1.06,38.76,-2.85,0.98,4.7
+Naive,46.65,1.2,42.68,-7.73,0.98,17.1

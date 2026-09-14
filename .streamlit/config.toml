@@ -1,0 +1,16 @@
+# The dashboard commits to a single light theme so that the chart palette - which was
+# validated for colour-vision deficiency against the light surface #fcfcfb - stays
+# correct. See src/viz.py for the tokens.
+[theme]
+base = "light"
+primaryColor = "#2a78d6"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f5f4f1"
+textColor = "#0b0b0b"
+font = "sans serif"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
