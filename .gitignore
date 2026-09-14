@@ -23,3 +23,8 @@ Thumbs.db
 # To keep the repo lean instead, uncomment the next two lines:
 # data/*.csv
 # outputs/*.png
+
+# Generated artefacts: both are rebuilt by scripts/train_models.py and
+# scripts/run_simulation.py, so they are not tracked.
+data/*.db
+models/*.joblib
