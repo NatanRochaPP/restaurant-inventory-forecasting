@@ -1,0 +1,182 @@
+{
+  "Chicken Breast": {
+    "sku": "Chicken Breast",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.28, 0% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "AX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Salmon Fillet": {
+    "sku": "Salmon Fillet",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.36, 3% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "AX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Coffee Beans": {
+    "sku": "Coffee Beans",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.24, 0% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "AX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Bacon": {
+    "sku": "Bacon",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.30, 2% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "AX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Milk": {
+    "sku": "Milk",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.22, 0% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "AX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Soft Drinks": {
+    "sku": "Soft Drinks",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.49, 0% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "AX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Fries (Potatoes)": {
+    "sku": "Fries (Potatoes)",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.31, 0% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "AX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Cooking Oil": {
+    "sku": "Cooking Oil",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.25, 0% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "AX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Lettuce": {
+    "sku": "Lettuce",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.33, 0% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "AX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Tomatoes": {
+    "sku": "Tomatoes",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.31, 0% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "AX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Butter": {
+    "sku": "Butter",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.29, 2% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "BX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Truffle Oil": {
+    "sku": "Truffle Oil",
+    "model_name": "Croston (SBA)",
+    "reason": "45% of days have no demand, above the 25% intermittency threshold. A Croston-family method forecasts the demand rate instead of fitting a curve through the zeros; the SBA variant removes the known upward bias of classic Croston.",
+    "segment": "BZ",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Burger Buns": {
+    "sku": "Burger Buns",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.30, 0% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "BX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Mushrooms": {
+    "sku": "Mushrooms",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.35, 4% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "BX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Cheese Slices": {
+    "sku": "Cheese Slices",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.29, 0% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "BX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Onions": {
+    "sku": "Onions",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.26, 0% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "CX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Eggs": {
+    "sku": "Eggs",
+    "model_name": "Gradient Boosting",
+    "reason": "Demand is stable (coefficient of variation 0.26, 0% zero-demand days). The gradient-boosting model can use day of week, holidays, weather and recent demand for this SKU.",
+    "segment": "CX",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Seasonal Berries": {
+    "sku": "Seasonal Berries",
+    "model_name": "Croston (SBA)",
+    "reason": "41% of days have no demand, above the 25% intermittency threshold. A Croston-family method forecasts the demand rate instead of fitting a curve through the zeros; the SBA variant removes the known upward bias of classic Croston.",
+    "segment": "CZ",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Gluten-free Buns": {
+    "sku": "Gluten-free Buns",
+    "model_name": "Croston (SBA)",
+    "reason": "28% of days have no demand, above the 25% intermittency threshold. A Croston-family method forecasts the demand rate instead of fitting a curve through the zeros; the SBA variant removes the known upward bias of classic Croston.",
+    "segment": "CY",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  },
+  "Vegan Cheese": {
+    "sku": "Vegan Cheese",
+    "model_name": "Croston (SBA)",
+    "reason": "32% of days have no demand, above the 25% intermittency threshold. A Croston-family method forecasts the demand rate instead of fitting a curve through the zeros; the SBA variant removes the known upward bias of classic Croston.",
+    "segment": "CY",
+    "strategy": "rule",
+    "selected_at": "2025-07-01",
+    "candidate_scores": {}
+  }
+}

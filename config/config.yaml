@@ -1,0 +1,166 @@
+# =====================================================================================
+# Central configuration - Forecasting-Driven Inventory Resupply for Restaurants
+# =====================================================================================
+# Every operational assumption lives here. No business constant may be hard-coded in
+# src/ modules or in the Streamlit app. Values are GBP and whole units unless stated.
+#
+# Cost figures are ASSUMPTIONS for a single casual-dining site, not observed data.
+# They are documented in README.md section "Assumptions" and are the numbers that must
+# be cited in the dissertation when reporting cost impact.
+# =====================================================================================
+
+data:
+  sales_csv: data/sales_data.csv
+  database: data/restaurant.db
+  # Columns the loader requires; validation fails loudly if any are missing.
+  required_columns:
+    - date
+    - sku
+    - category
+    - shelf_life_days
+    - units_sold
+    - temp_c
+    - bank_holiday
+    - school_holiday
+    - weekend
+    - dow
+    - promo
+
+forecast:
+  horizon_days: 7            # one delivery cycle
+  random_seed: 42
+  min_history_days: 60       # refuse to fit a model on less history than this
+  refit_frequency_days: 7    # simulator refits models on this cadence, not daily
+  seasonal_period: 7         # weekly seasonality
+  # Width of the forecast uncertainty interval used for display and for safety stock.
+  interval_service_level: 0.95
+  # Rolling-origin backtest settings (must match the AE1 baseline for comparability).
+  backtest:
+    n_folds: 12
+    horizon_days: 7
+  gradient_boosting:
+    max_iter: 300
+    learning_rate: 0.05
+    max_depth: 6
+    min_samples_leaf: 20
+    l2_regularization: 0.0
+  croston:
+    alpha: 0.1               # smoothing constant for level and interval
+    intermittent_zero_share: 0.25   # >= this share of zero-demand days => intermittent
+
+features:
+  lags: [7, 14]
+  rolling_windows: [28]
+  # Promotions are planned in advance by the marketing calendar, so they are treated as
+  # known at ordering time. Set to false to exclude future promo flags entirely.
+  assume_promotions_known: true
+  # Calendar effects (day of week, bank/school holidays) are always known in advance.
+  assume_calendar_known: true
+  # A closed site sells nothing. That is a business fact, not a statistical pattern: with
+  # only one or two closure days in the history, a tree model cannot learn it reliably.
+  # The forecast is therefore set to zero on known closure days as a deterministic rule,
+  # applied after prediction and recorded in the forecast metadata.
+  zero_demand_on_closed_days: true
+
+weather:
+  # A real ordering decision uses a WEATHER FORECAST, not the realised temperature.
+  # With perfect_foresight=false the future temperature is degraded by noise that grows
+  # with lead time, which prevents an optimistic bias in the reported results.
+  perfect_foresight: false
+  forecast_noise_std_c: 1.2      # std dev at day+1
+  noise_growth_per_day_c: 0.35   # extra std dev per additional day ahead
+  random_seed: 42
+
+inventory:
+  policy: base_stock             # base_stock | s_S
+  review_period_days: 2          # nominal; the simulator uses the real gap to the next order day
+  service_level: 0.95            # target cycle service level (z-score driven)
+  # (s,S) policy: reorder point s is the protection-period demand + safety stock, and
+  # S is the base-stock level. An order is only raised when the position falls below s.
+  s_S_reorder_multiplier: 1.0
+  # Guardrails - a recommendation may never exceed this many days of expected demand.
+  max_order_days_of_supply: 14
+  # Perishability guardrail: do not order more than can be consumed within shelf life.
+  enforce_shelf_life_cap: true
+  # Fraction of remaining shelf life usable for cover (1.0 = full shelf life).
+  shelf_life_usable_fraction: 1.0
+  pack_rounding: nearest         # nearest | up | none
+  allow_backorders: false        # unmet restaurant demand is lost, not backordered
+
+supplier:
+  lead_time_days: 2
+  # Weekdays on which an order may be placed (0 = Monday). Three deliveries per week.
+  order_days: [0, 2, 4]
+  ordering_cost_per_order: 12.50
+
+costs:
+  # Holding cost is derived from unit cost unless an absolute override is given.
+  holding_rate_annual: 0.25          # 25% of unit cost per year (capital + chilled storage)
+  holding_cost_per_unit_per_day: null
+  # Waste: the unit is written off at cost, plus a disposal charge.
+  waste_cost_multiplier: 1.0
+  waste_disposal_cost_per_unit: 0.05
+  # Stockout: lost contribution margin plus goodwill, expressed as a multiple of cost.
+  stockout_cost_multiplier: 2.0
+  stockout_cost_per_unit: null
+
+simulation:
+  start_date: 2025-07-01
+  end_date: 2025-12-31
+  # Days of history before start_date used to warm up stock and fit the first models.
+  warmup_days: 365
+  # Opening stock is expressed as days of recent average demand.
+  initial_stock_days_of_supply: 2.0
+  random_seed: 42
+
+baseline:
+  # The "current manual method": a par level set from a trailing average of demand with
+  # a flat manager buffer, reviewed on the same delivery calendar as the AI policy.
+  name: Manual par-level
+  lookback_days: 28
+  buffer_pct: 0.20
+  # A manager orders up to par for the days until the next delivery plus lead time.
+  cover_days: null                   # null => lead time + review period, same as AI
+  # A par level set from average usage embodies no explicit perishability reasoning, so
+  # the shelf-life cap is off by default. This is the one deliberate asymmetry between
+  # the two policies and it is reported as such: it lets the baseline buy availability
+  # with waste at high buffers, which the AI policy refuses to do. Set to true for the
+  # sensitivity run that removes the asymmetry.
+  apply_shelf_life_cap: false
+
+sku_defaults:
+  unit_cost: 1.00
+  pack_size: 1
+  min_order_quantity: 0
+  # shelf_life_days is taken from the dataset unless overridden below.
+
+# Per-SKU economics. unit_cost is the purchase cost of one saleable unit.
+# pack_size is the supplier case size; min_order_quantity is the smallest raisable order.
+skus:
+  Burger Buns:        {unit_cost: 0.18, pack_size: 48, min_order_quantity: 48}
+  Fries (Potatoes):   {unit_cost: 0.30, pack_size: 20, min_order_quantity: 20}
+  Chicken Breast:     {unit_cost: 1.80, pack_size: 10, min_order_quantity: 10}
+  Milk:               {unit_cost: 0.75, pack_size: 12, min_order_quantity: 12}
+  Lettuce:            {unit_cost: 0.60, pack_size: 12, min_order_quantity: 12}
+  Tomatoes:           {unit_cost: 0.45, pack_size: 12, min_order_quantity: 12}
+  Cheese Slices:      {unit_cost: 0.22, pack_size: 50, min_order_quantity: 50}
+  Soft Drinks:        {unit_cost: 0.40, pack_size: 24, min_order_quantity: 24}
+  Coffee Beans:       {unit_cost: 2.10, pack_size: 6,  min_order_quantity: 6}
+  Cooking Oil:        {unit_cost: 1.60, pack_size: 4,  min_order_quantity: 4}
+  Bacon:              {unit_cost: 1.10, pack_size: 10, min_order_quantity: 10}
+  Salmon Fillet:      {unit_cost: 3.20, pack_size: 6,  min_order_quantity: 6}
+  Mushrooms:          {unit_cost: 0.55, pack_size: 10, min_order_quantity: 10}
+  Onions:             {unit_cost: 0.25, pack_size: 20, min_order_quantity: 20}
+  Butter:             {unit_cost: 0.95, pack_size: 12, min_order_quantity: 12}
+  Eggs:               {unit_cost: 0.16, pack_size: 30, min_order_quantity: 30}
+  Truffle Oil:        {unit_cost: 8.50, pack_size: 2,  min_order_quantity: 2}
+  Vegan Cheese:       {unit_cost: 0.65, pack_size: 12, min_order_quantity: 12}
+  Gluten-free Buns:   {unit_cost: 0.55, pack_size: 12, min_order_quantity: 12}
+  Seasonal Berries:   {unit_cost: 1.40, pack_size: 6,  min_order_quantity: 6}
+
+segmentation:
+  # ABC by cumulative share of annual purchase value (Pareto).
+  abc_thresholds: [0.80, 0.95]
+  # XYZ by coefficient of variation of daily demand.
+  xyz_thresholds: [0.50, 1.00]
+  lookback_days: 365
