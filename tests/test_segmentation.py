@@ -134,16 +134,15 @@ class TestForecastService:
     def test_service_refits_only_on_the_configured_cadence(self, synthetic_panel, config):
         from src.forecasting.service import ForecastService
 
-        service = ForecastService(synthetic_panel, config)
-        service.forecast(pd.Timestamp("2025-04-01"), ["Smooth SKU"])
-        first_fit = service.last_fit_date
-        service.forecast(pd.Timestamp("2025-04-02"), ["Smooth SKU"])
-        assert service.last_fit_date == first_fit  # within the refit window
-        service.forecast(
-            pd.Timestamp("2025-04-01") + pd.Timedelta(days=config.forecast.refit_frequency_days),
-            ["Smooth SKU"],
-        )
-        assert service.last_fit_date != first_fit
+        service = ForecastService(synthetic_panel, config, model_choices=_pinned_to_gb())
+        cadence = pd.Timedelta(days=config.forecast.refit_frequency_days)
+        anchor = service.refit_anchor(pd.Timestamp("2025-04-02"))
+        service.forecast(anchor, ["Smooth SKU"])
+        assert service.last_fit_date == anchor
+        service.forecast(anchor + cadence - pd.Timedelta(days=1), ["Smooth SKU"])
+        assert service.last_fit_date == anchor  # same refit window, same model
+        service.forecast(anchor + cadence, ["Smooth SKU"])
+        assert service.last_fit_date == anchor + cadence
 
     def test_moving_backwards_in_time_forces_a_refit(self, synthetic_panel, config):
         """The refit cadence must not keep a model fitted on data the new date cannot see."""
@@ -151,10 +150,11 @@ class TestForecastService:
 
         # Pin the routing so this exercises the fit cache alone, not model selection.
         service = ForecastService(synthetic_panel, config, model_choices=_pinned_to_gb())
-        service.forecast(pd.Timestamp("2025-04-01"), ["Smooth SKU"])
-        assert service.last_fit_date == pd.Timestamp("2025-04-01")
-        service.forecast(pd.Timestamp("2025-03-01"), ["Smooth SKU"])
-        assert service.last_fit_date == pd.Timestamp("2025-03-01")
+        late, early = pd.Timestamp("2025-04-01"), pd.Timestamp("2025-03-01")
+        service.forecast(late, ["Smooth SKU"])
+        assert service.last_fit_date == service.refit_anchor(late)
+        service.forecast(early, ["Smooth SKU"])
+        assert service.last_fit_date == service.refit_anchor(early) <= early
 
     def test_a_forecast_does_not_depend_on_which_dates_were_viewed_first(
         self, synthetic_panel, config
@@ -180,7 +180,7 @@ class TestForecastService:
         service = ForecastService(synthetic_panel, config, model_choices=_pinned_to_gb())
         service.forecast_sku(pd.Timestamp("2025-04-01"), "Smooth SKU")
         service.explain_forecast(pd.Timestamp("2025-03-01"), "Smooth SKU")
-        assert service.last_fit_date == pd.Timestamp("2025-03-01")
+        assert service.last_fit_date == service.refit_anchor(pd.Timestamp("2025-03-01"))
 
     def test_explaining_a_memoised_forecast_still_refits_the_model(self, synthetic_panel, config):
         """A memoised forecast skips the refit, so the explanation must force one itself.
@@ -194,9 +194,42 @@ class TestForecastService:
         service = ForecastService(synthetic_panel, config, model_choices=_pinned_to_gb())
         service.forecast_sku(early, "Smooth SKU")  # memoises the early forecast
         service.forecast_sku(late, "Smooth SKU")  # refits at the later date
-        assert service.last_fit_date == late
+        assert service.last_fit_date == service.refit_anchor(late)
         service.explain_forecast(early, "Smooth SKU")
-        assert service.last_fit_date == early
+        assert service.last_fit_date == service.refit_anchor(early)
+
+    def test_refit_anchor_depends_only_on_the_date(self, synthetic_panel, config):
+        """Anchors sit on a fixed grid, never after the date, and ignore service history."""
+        from src.forecasting.service import ForecastService
+
+        cadence = config.forecast.refit_frequency_days
+        origin = pd.Timestamp(config.simulation.start_date)
+        fresh = ForecastService(synthetic_panel, config, model_choices=_pinned_to_gb())
+        used = ForecastService(synthetic_panel, config, model_choices=_pinned_to_gb())
+        used.forecast(pd.Timestamp("2025-04-20"), ["Smooth SKU"])
+        for day in pd.date_range("2025-03-10", "2025-04-30"):
+            anchor = fresh.refit_anchor(day)
+            assert anchor <= day
+            assert (day - anchor).days < cadence
+            assert (anchor - origin).days % cadence == 0
+            assert used.refit_anchor(day) == anchor
+
+    def test_forecast_is_identical_whatever_was_forecast_before(self, synthetic_panel, config):
+        """Regression: an earlier forecast used to leave a model that a later date reused.
+
+        Forecasting 8 April and then 10 April served 10 April from the 8 April model, while a
+        fresh service fitted at 10 April itself, so the same date gave two forecasts.
+        """
+        from src.forecasting.service import ForecastService
+
+        target = pd.Timestamp("2025-04-10")
+        fresh = ForecastService(synthetic_panel, config, model_choices=_pinned_to_gb()).forecast_sku(target, "Smooth SKU")
+        for earlier in (pd.Timestamp("2025-04-08"), pd.Timestamp("2025-04-09"), pd.Timestamp("2025-03-20")):
+            service = ForecastService(synthetic_panel, config, model_choices=_pinned_to_gb())
+            service.forecast_sku(earlier, "Smooth SKU")
+            got = service.forecast_sku(target, "Smooth SKU")
+            assert list(got.predicted) == pytest.approx(list(fresh.predicted)), earlier
+            assert got.sigma == pytest.approx(fresh.sigma), earlier
 
     def test_forecasting_before_any_history_is_rejected(self, synthetic_panel, config):
         from src.forecasting.service import ForecastService
@@ -204,3 +237,55 @@ class TestForecastService:
         service = ForecastService(synthetic_panel, config)
         with pytest.raises(ValueError, match="No sales history"):
             service.forecast(pd.Timestamp("2024-01-01"))
+
+
+@pytest.mark.slow
+class TestForecastDeterminismEval:
+    """Property check that generalises the refit regression beyond the dates it names."""
+
+    def test_forecasts_match_fresh_ones_in_any_order(self, synthetic_panel, config):
+        """Whatever order dates are forecast in, and whether or not the memo serves them,
+        each forecast equals the one a fresh service produces for that date."""
+        import random
+
+        from src.forecasting.service import ForecastService
+
+        days = list(pd.date_range("2025-03-05", "2025-04-26", freq="4D"))
+        random.Random(42).shuffle(days)
+        want = {
+            day: ForecastService(synthetic_panel, config, model_choices=_pinned_to_gb()).forecast_sku(day, "Smooth SKU")
+            for day in days
+        }
+        shared = ForecastService(synthetic_panel, config, model_choices=_pinned_to_gb())
+        for day in days + days[::-1]:  # the reversed second pass is served from the memo
+            got = shared.forecast_sku(day, "Smooth SKU")
+            assert list(got.predicted) == pytest.approx(list(want[day].predicted)), day
+            assert got.sigma == pytest.approx(want[day].sigma), day
+
+
+def test_lazy_model_choices_do_not_depend_on_request_order(synthetic_panel, config):
+    """Regression: a routing chosen lazily at an earlier date was reused for later dates.
+
+    Forecasting 20 February and then 25 April routed Smooth SKU with the February
+    selection, while a fresh service selected for 25 April, so one date gave two forecasts.
+    """
+    from src.forecasting.service import ForecastService
+
+    target = pd.Timestamp("2025-04-25")
+    want = ForecastService(synthetic_panel, config).forecast(target)
+    used = ForecastService(synthetic_panel, config)
+    used.forecast(pd.Timestamp("2025-02-20"))
+    got = used.forecast(target)
+    for sku in want:
+        assert list(got[sku].predicted) == pytest.approx(list(want[sku].predicted)), sku
+
+
+def test_a_date_just_after_the_data_start_can_still_be_forecast(synthetic_panel, config):
+    """Regression: an anchor a few days after the first fittable date had too little history."""
+    from src.forecasting.service import ForecastService
+
+    day = pd.Timestamp("2025-01-30")
+    service = ForecastService(synthetic_panel, config, model_choices=_pinned_to_gb())
+    assert service.refit_anchor(day) == day
+    result = service.forecast_sku(day, "Smooth SKU")
+    assert len(result.predicted) == config.forecast.horizon_days

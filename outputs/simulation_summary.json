@@ -20,22 +20,22 @@
     "total_received": 270246.0
   },
   "ai": {
-    "stockout_days": 278.0,
-    "stockout_units": 4540.428571428572,
-    "unit_service_level": 98.29868757581045,
-    "day_service_level": 92.44565217391305,
-    "waste_units": 2363.785714285714,
-    "waste_share_of_supply": 0.8973039396450371,
-    "waste_cost": 3972.415,
-    "holding_cost": 169.9160572407045,
+    "stockout_days": 282.0,
+    "stockout_units": 4730.428571428572,
+    "unit_service_level": 98.22749399672188,
+    "day_service_level": 92.33695652173914,
+    "waste_units": 2241.785714285714,
+    "waste_share_of_supply": 0.8517487649167981,
+    "waste_cost": 3989.455,
+    "holding_cost": 168.40196135029356,
     "ordering_cost": 987.5,
-    "stockout_cost": 10325.258571428572,
-    "total_cost": 15455.089628669277,
-    "average_inventory_units": 78.59256599378881,
-    "average_inventory_value": 67.41234879658386,
+    "stockout_cost": 10848.63857142857,
+    "total_cost": 15993.995532778863,
+    "average_inventory_units": 77.99419642857143,
+    "average_inventory_value": 66.81164770962734,
     "orders_placed": 1512.0,
     "total_demand": 266878.0,
-    "total_received": 263432.0
+    "total_received": 263198.0
   },
   "comparison": [
     {
@@ -43,9 +43,9 @@
       "key": "stockout_days",
       "unit": "days",
       "Manual par-level baseline": 202.0,
-      "AI forecast + inventory policy": 278.0,
-      "absolute_change": 76.0,
-      "improvement_pct": -37.6,
+      "AI forecast + inventory policy": 282.0,
+      "absolute_change": 80.0,
+      "improvement_pct": -39.6,
       "better_when": "lower_is_better"
     },
     {
@@ -53,9 +53,9 @@
       "key": "stockout_units",
       "unit": "units",
       "Manual par-level baseline": 2959.0,
-      "AI forecast + inventory policy": 4540.0,
-      "absolute_change": 1581.0,
-      "improvement_pct": -53.4,
+      "AI forecast + inventory policy": 4730.0,
+      "absolute_change": 1771.0,
+      "improvement_pct": -59.8,
       "better_when": "lower_is_better"
     },
     {
@@ -63,9 +63,9 @@
       "key": "unit_service_level",
       "unit": "%",
       "Manual par-level baseline": 98.89,
-      "AI forecast + inventory policy": 98.3,
-      "absolute_change": -0.59,
-      "improvement_pct": -0.6,
+      "AI forecast + inventory policy": 98.23,
+      "absolute_change": -0.66,
+      "improvement_pct": -0.7,
       "better_when": "higher_is_better"
     },
     {
@@ -73,9 +73,9 @@
       "key": "day_service_level",
       "unit": "%",
       "Manual par-level baseline": 94.51,
-      "AI forecast + inventory policy": 92.45,
-      "absolute_change": -2.07,
-      "improvement_pct": -2.2,
+      "AI forecast + inventory policy": 92.34,
+      "absolute_change": -2.17,
+      "improvement_pct": -2.3,
       "better_when": "higher_is_better"
     },
     {
@@ -83,9 +83,9 @@
       "key": "waste_units",
       "unit": "units",
       "Manual par-level baseline": 6574.0,
-      "AI forecast + inventory policy": 2364.0,
-      "absolute_change": -4210.0,
-      "improvement_pct": 64.0,
+      "AI forecast + inventory policy": 2242.0,
+      "absolute_change": -4332.0,
+      "improvement_pct": 65.9,
       "better_when": "lower_is_better"
     },
     {
@@ -93,9 +93,9 @@
       "key": "waste_share_of_supply",
       "unit": "%",
       "Manual par-level baseline": 2.43,
-      "AI forecast + inventory policy": 0.9,
-      "absolute_change": -1.54,
-      "improvement_pct": 63.1,
+      "AI forecast + inventory policy": 0.85,
+      "absolute_change": -1.58,
+      "improvement_pct": 65.0,
       "better_when": "lower_is_better"
     },
     {
@@ -103,9 +103,9 @@
       "key": "waste_cost",
       "unit": "GBP",
       "Manual par-level baseline": 6903.07,
-      "AI forecast + inventory policy": 3972.41,
-      "absolute_change": -2930.65,
-      "improvement_pct": 42.5,
+      "AI forecast + inventory policy": 3989.45,
+      "absolute_change": -2913.61,
+      "improvement_pct": 42.2,
       "better_when": "lower_is_better"
     },
     {
@@ -113,9 +113,9 @@
       "key": "holding_cost",
       "unit": "GBP",
       "Manual par-level baseline": 221.28,
-      "AI forecast + inventory policy": 169.92,
-      "absolute_change": -51.37,
-      "improvement_pct": 23.2,
+      "AI forecast + inventory policy": 168.4,
+      "absolute_change": -52.88,
+      "improvement_pct": 23.9,
       "better_when": "lower_is_better"
     },
     {
@@ -133,9 +133,9 @@
       "key": "stockout_cost",
       "unit": "GBP",
       "Manual par-level baseline": 8273.86,
-      "AI forecast + inventory policy": 10325.26,
-      "absolute_change": 2051.4,
-      "improvement_pct": -24.8,
+      "AI forecast + inventory policy": 10848.64,
+      "absolute_change": 2574.78,
+      "improvement_pct": -31.1,
       "better_when": "lower_is_better"
     },
     {
@@ -143,9 +143,9 @@
       "key": "total_cost",
       "unit": "GBP",
       "Manual par-level baseline": 16385.71,
-      "AI forecast + inventory policy": 15455.09,
-      "absolute_change": -930.62,
-      "improvement_pct": 5.7,
+      "AI forecast + inventory policy": 15994.0,
+      "absolute_change": -391.71,
+      "improvement_pct": 2.4,
       "better_when": "lower_is_better"
     },
     {
@@ -153,9 +153,9 @@
       "key": "average_inventory_units",
       "unit": "units",
       "Manual par-level baseline": 120.9,
-      "AI forecast + inventory policy": 78.6,
-      "absolute_change": -42.3,
-      "improvement_pct": 35.0,
+      "AI forecast + inventory policy": 78.0,
+      "absolute_change": -42.9,
+      "improvement_pct": 35.5,
       "better_when": "lower_is_better"
     },
     {
@@ -163,9 +163,9 @@
       "key": "average_inventory_value",
       "unit": "GBP",
       "Manual par-level baseline": 87.79,
-      "AI forecast + inventory policy": 67.41,
-      "absolute_change": -20.38,
-      "improvement_pct": 23.2,
+      "AI forecast + inventory policy": 66.81,
+      "absolute_change": -20.98,
+      "improvement_pct": 23.9,
       "better_when": "lower_is_better"
     },
     {
@@ -183,13 +183,13 @@
     {
       "reference_setting": 0.05,
       "matched_service_level_pct": 96.76,
-      "matched_ai_service_level_setting": 0.7266,
+      "matched_ai_service_level_setting": 0.7406,
       "waste_units_baseline": 2498.8,
-      "waste_units_ai": 1853.7,
-      "waste_reduction_pct": 25.8,
+      "waste_units_ai": 1784.6,
+      "waste_reduction_pct": 28.6,
       "total_cost_baseline": 22501.94,
-      "total_cost_ai": 20161.98,
-      "cost_reduction_pct": 10.4,
+      "total_cost_ai": 20081.46,
+      "cost_reduction_pct": 10.8,
       "avg_inventory_baseline": 80.2,
       "avg_inventory_ai": 61.0,
       "inventory_reduction_pct": 24.0
@@ -197,16 +197,16 @@
     {
       "reference_setting": 0.1,
       "matched_service_level_pct": 97.9,
-      "matched_ai_service_level_setting": 0.8969,
+      "matched_ai_service_level_setting": 0.9081,
       "waste_units_baseline": 3373.8,
-      "waste_units_ai": 2077.8,
-      "waste_reduction_pct": 38.4,
+      "waste_units_ai": 2037.5,
+      "waste_reduction_pct": 39.6,
       "total_cost_baseline": 18201.83,
-      "total_cost_ai": 15679.22,
-      "cost_reduction_pct": 13.9,
+      "total_cost_ai": 16030.74,
+      "cost_reduction_pct": 11.9,
       "avg_inventory_baseline": 92.7,
-      "avg_inventory_ai": 70.4,
-      "inventory_reduction_pct": 24.0
+      "avg_inventory_ai": 71.1,
+      "inventory_reduction_pct": 23.3
     }
   ],
   "matched_waste": [
@@ -214,15 +214,15 @@
       "reference_setting": 0.0,
       "matched_waste_units": 1637.8,
       "service_level_baseline": 94.8,
-      "service_level_ai": 95.94,
-      "service_level_gain_pp": 1.15
+      "service_level_ai": 96.12,
+      "service_level_gain_pp": 1.32
     },
     {
       "reference_setting": 0.05,
       "matched_waste_units": 2498.8,
       "service_level_baseline": 96.76,
-      "service_level_ai": 98.38,
-      "service_level_gain_pp": 1.62
+      "service_level_ai": 98.41,
+      "service_level_gain_pp": 1.66
     }
   ]
 }
