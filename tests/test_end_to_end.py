@@ -220,3 +220,23 @@ class TestResearchEvidence:
             results["ai_kpis"]["average_inventory_units"]
             < results["baseline_kpis"]["average_inventory_units"]
         )
+
+
+class TestNavigationIndependence:
+    def test_simulation_result_does_not_depend_on_dashboard_navigation(self):
+        """Regression: opening the Overview page before the Simulation page changed its numbers.
+
+        Overview replays recent dates and memoises their forecasts; the simulation then reused
+        them although they came from models fitted on a different refit schedule.
+        """
+        from src.app_services import recent_forecast_accuracy
+
+        fresh = compare_strategies(build_context())["ai_kpis"]
+        context = build_context()
+        as_of = pd.Timestamp("2025-12-05")
+        stock = stock_positions(context, as_of)
+        build_recommendations(context, as_of, stock)
+        recent_forecast_accuracy(context, as_of, 35)
+        after_overview = compare_strategies(context)["ai_kpis"]
+        for key in ("waste_units", "stockout_units", "unit_service_level", "total_cost"):
+            assert after_overview[key] == pytest.approx(fresh[key]), key
