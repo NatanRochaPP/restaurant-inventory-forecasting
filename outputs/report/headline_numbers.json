@@ -22,13 +22,13 @@
     {
       "reference_setting": 0.05,
       "matched_service_level_pct": 96.76,
-      "matched_ai_service_level_setting": 0.7266,
+      "matched_ai_service_level_setting": 0.7406,
       "waste_units_baseline": 2498.8,
-      "waste_units_ai": 1853.7,
-      "waste_reduction_pct": 25.8,
+      "waste_units_ai": 1784.6,
+      "waste_reduction_pct": 28.6,
       "total_cost_baseline": 22501.94,
-      "total_cost_ai": 20161.98,
-      "cost_reduction_pct": 10.4,
+      "total_cost_ai": 20081.46,
+      "cost_reduction_pct": 10.8,
       "avg_inventory_baseline": 80.2,
       "avg_inventory_ai": 61.0,
       "inventory_reduction_pct": 24.0
@@ -36,16 +36,16 @@
     {
       "reference_setting": 0.1,
       "matched_service_level_pct": 97.9,
-      "matched_ai_service_level_setting": 0.8969,
+      "matched_ai_service_level_setting": 0.9081,
       "waste_units_baseline": 3373.8,
-      "waste_units_ai": 2077.8,
-      "waste_reduction_pct": 38.4,
+      "waste_units_ai": 2037.5,
+      "waste_reduction_pct": 39.6,
       "total_cost_baseline": 18201.83,
-      "total_cost_ai": 15679.22,
-      "cost_reduction_pct": 13.9,
+      "total_cost_ai": 16030.74,
+      "cost_reduction_pct": 11.9,
       "avg_inventory_baseline": 92.7,
-      "avg_inventory_ai": 70.4,
-      "inventory_reduction_pct": 24.0
+      "avg_inventory_ai": 71.1,
+      "inventory_reduction_pct": 23.3
     }
   ],
   "matched_waste": [
@@ -53,15 +53,15 @@
       "reference_setting": 0.0,
       "matched_waste_units": 1637.8,
       "service_level_baseline": 94.8,
-      "service_level_ai": 95.94,
-      "service_level_gain_pp": 1.15
+      "service_level_ai": 96.12,
+      "service_level_gain_pp": 1.32
     },
     {
       "reference_setting": 0.05,
       "matched_waste_units": 2498.8,
       "service_level_baseline": 96.76,
-      "service_level_ai": 98.38,
-      "service_level_gain_pp": 1.62
+      "service_level_ai": 98.41,
+      "service_level_gain_pp": 1.66
     }
   ]
 }
