@@ -131,7 +131,7 @@ src/
   persistence/                  SQLite schema and repository
 app.py                          Streamlit dashboard
 scripts/                        train_models.py, run_backtest.py, run_simulation.py
-tests/                          227 tests, including dedicated leakage tests
+tests/                          241 tests, including dedicated leakage tests
 baseline_forecasting.py         the original AE1 experiment, preserved unchanged
 ```
 
@@ -271,7 +271,7 @@ unit cost) are **stated assumptions**, not observed data, and should be cited as
 ## Testing
 
 ```bash
-python -m pytest tests/ -q            # 227 tests, about a minute
+python -m pytest tests/ -q            # 241 tests, about a minute
 python -m pytest -m "not slow" -q     # skip the full-dataset end-to-end tests
 ```
 
