@@ -28,3 +28,19 @@ Thumbs.db
 # scripts/run_simulation.py, so they are not tracked.
 data/*.db
 models/*.joblib
+
+# Dissertation report tooling: kept locally only, never committed
+scripts/generate_dissertation_draft.py
+scripts/literature_text.py
+scripts/reflection_text.py
+scripts/references.py
+scripts/citations.py
+scripts/architecture_diagram.py
+scripts/capture_dashboard.py
+tests/test_dissertation_draft.py
+tests/test_references.py
+tests/test_citations.py
+docs/search_log.csv
+docs/*.docx
+outputs/report/fig_architecture.png
+outputs/report/screenshots/
