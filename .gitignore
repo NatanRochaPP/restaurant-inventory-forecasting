@@ -28,3 +28,7 @@ Thumbs.db
 # scripts/run_simulation.py, so they are not tracked.
 data/*.db
 models/*.joblib
+
+# Built by scripts/generate_dissertation_draft.py and scripts/capture_dashboard.py
+outputs/report/fig_architecture.png
+outputs/report/screenshots/

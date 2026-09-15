@@ -23,13 +23,13 @@ INTRO = (
 
 SECTIONS = [
     ("2.1 Food waste and availability in food service", [
-        "The problem this project addresses is economically significant and well documented at "
-        "sector level. WRAP (2024) estimates that UK hospitality and food service discards 1.1 "
-        "million tonnes of food annually, around three quarters of which was edible, at a cost "
-        "of £3.2 billion, with close to one fifth of purchased food thrown away. Distributed "
-        "across the sector this is approximately £10,000 per outlet per year (WRAP, no date) - "
-        "a figure that, for an independent site operating on the margins typical of the sector, "
-        "is material to whether the year is profitable.",
+        'The problem this project addresses is well documented at sector level. WRAP '
+        '(2025) estimates that UK hospitality and food service generates 1.1 million '
+        'tonnes of food waste a year, of which 800,000 tonnes could have been eaten, '
+        "valued at £3.21 billion at 2021 prices, and that the sector's food waste "
+        "amounts to 18% of the food it buys. WRAP's sector page puts the average cost"
+        ' at £10,000 per outlet per year (WRAP n.d.). Both figures are modelled '
+        'rather than newly measured, a limitation Section 1.1 sets out.',
 
         "The more useful question for a project concerned with ordering is not how much waste "
         "exists but how much of it an ordering decision can reach. WRAP (2013) attributes 45% of "
@@ -74,8 +74,8 @@ SECTIONS = [
         "designed to work with it rather than against it - the reasoning behind retaining "
         "manager override and recording it, rather than presenting a recommendation as final.",
 
-        "The absence worth naming is that no equivalent study of small hospitality operations "
-        "was found. The evidence that ordering is manual, and that manual ordering departs "
+        "The absence worth naming is that none of the sources reviewed studies small hospitality "
+        "operations. The evidence that ordering is manual, and that manual ordering departs "
         "predictably from system advice, is drawn from supermarkets. Restaurants differ in shelf "
         "life, order frequency, supply chain complexity and the sophistication of the systems "
         "available to them, and the direction in which those differences push the finding is not "
@@ -108,7 +108,7 @@ SECTIONS = [
         "across a large panel of brick-and-mortar stores, establishing weather as a genuine "
         "driver of daily demand rather than a plausible-sounding one, and supplying the "
         "calibration basis for the temperature sensitivity built into this project's generator. "
-        "Saputra et al. (2024) model holiday and event effects as exogenous regressors within a "
+        "Saputra and Kumar (2024) model holiday and event effects as exogenous regressors within a "
         "SARIMAX specification, which is the conventional statistical treatment and the "
         "calibration basis for the bank-holiday uplift used here. The methodological point these "
         "two share is that both effects are knowable in advance - a calendar indefinitely, a "
@@ -120,7 +120,7 @@ SECTIONS = [
         "than setting. They forecast daily retail demand using machine learning with calendric "
         "special days treated explicitly, which is structurally the same problem as the one "
         "addressed here and the nearest precedent for the feature set in Section 3.3. The M5 "
-        "competition data (Makridakis, Spiliotis and Assimakopoulos, 2022b) supplies the closest "
+        "competition data (Makridakis, Spiliotis and Assimakopoulos 2022b) supplies the closest "
         "large public analogue in data structure: daily, hierarchical, SKU-level demand at store "
         "level, including the long tail of slow-moving lines that a single restaurant's range "
         "also contains. The structure of the M5 series, rather than the competition results, is "
@@ -159,7 +159,7 @@ SECTIONS = [
 
         "Exponential smoothing, and specifically the Holt-Winters formulation with additive "
         "trend and additive seasonality, is the natural statistical competitor at this "
-        "granularity (Hyndman and Athanasopoulos, 2021). It captures level, trend and weekly "
+        "granularity (Hyndman and Athanasopoulos 2021). It captures level, trend and weekly "
         "seasonality in a small number of estimated parameters and is robust on short series - "
         "but it cannot use exogenous information. A bank holiday, a promotion or a temperature "
         "forecast are invisible to it. That limitation is the analytical justification for "
@@ -167,10 +167,10 @@ SECTIONS = [
         "fashionable but whether the covariates it can accept carry information that a purely "
         "autoregressive method cannot access.",
 
-        "The gradient-boosting family (Chen and Guestrin, 2016) is the appropriate choice for "
+        "The gradient-boosting family (Chen and Guestrin 2016) is the appropriate choice for "
         "that role. Its suitability here is not asserted on general grounds but on evidence from "
         "the closest available setting: the M5 accuracy competition (Makridakis, Spiliotis and "
-        "Assimakopoulos, 2022a) found that gradient-boosted trees dominated on daily hierarchical "
+        "Assimakopoulos 2022a) found that gradient-boosted trees dominated on daily hierarchical "
         "retail data, and further that models trained across many series outperformed models "
         "fitted to each series individually. That second finding is the direct justification for "
         "the global, cross-SKU model used here. Fitting a separate model per SKU on two years of "
@@ -188,10 +188,10 @@ SECTIONS = [
         "protection period, where that advantage should be available. Second, the finding is a "
         "caution against assuming the heavier model wins, which is exactly why the full model "
         "ladder is evaluated empirically in Section 5.1 rather than assumed. The result there - "
-        "a modest margin over ETS on sMAPE but a wider one on WAPE - is consistent with Schmidt "
-        "et al.'s caution rather than a refutation of it.",
+        "a modest margin over ETS on sMAPE but a wider one on WAPE - is consistent with Schmidt, "
+        "Kabir and Hoque's caution rather than a refutation of it.",
 
-        "Prophet (Taylor and Letham, 2018) was considered and not adopted. Its design goals - "
+        "Prophet (Taylor and Letham 2018) was considered and not adopted. Its design goals - "
         "interpretable decomposition into trend, seasonality and holiday components, usable by "
         "analysts without forecasting expertise - align well with the explainability "
         "requirements set out in Section 2.8, and it handles holiday effects natively. It was "
@@ -445,7 +445,7 @@ SECTIONS = [
 
     ("2.9 Evaluation methodology", [
         "Any evaluation of a forecasting system must respect the arrow of time, and the standard "
-        "protocol for doing so is rolling-origin cross-validation (Hyndman and Athanasopoulos, "
+        "protocol for doing so is rolling-origin cross-validation (Hyndman and Athanasopoulos "
         "2021). A single train-test split on a time series wastes data and produces an estimate "
         "dependent on where the split happened to fall; random k-fold cross-validation is "
         "straightforwardly invalid, since it permits a model to be fitted on data postdating the "
@@ -496,11 +496,11 @@ SECTIONS = [
 
         "On one side are forecasting studies that establish accuracy and stop. Schmidt, Kabir "
         "and Hoque (2022) forecast restaurant demand at item level on real data and report error "
-        "metrics, with no ordering decision downstream. Aci and Yergok (2023) do the same for a "
+        "metrics, with no ordering decision downstream. Aci and Yergök (2023) do the same for a "
         "university refectory, comparing regression models on calendar and menu features and "
         "reporting predictive accuracy alone; the setting is food service and the features are "
         "close to those used here, but no stock decision follows from the forecast. The M5 accuracy competition (Makridakis, "
-        "Spiliotis and Assimakopoulos, 2022a) does the same at very large scale and with great "
+        "Spiliotis and Assimakopoulos 2022a) does the same at very large scale and with great "
         "methodological rigour, but its evaluation is entirely in units of forecast error; no "
         "operational key performance indicator is reported, and no order is placed. The implicit "
         "assumption is that a better forecast yields a better inventory outcome - an assumption "
@@ -549,11 +549,12 @@ SECTIONS = [
 
         "Finally, the setting itself remains under-served. The evidence that ordering is manual "
         "and departs predictably from system advice comes from supermarkets (van Donselaar et "
-        "al., 2010; van Donselaar et al., 2006). The food-service work above concerns catering "
+        "al. 2010; van Donselaar et al. 2006). The food-service work above concerns catering "
         "operations and canteens, where production planning against a known cover count differs "
-        "materially from ordering ingredients against uncertain a la carte demand. No study was "
-        "found of replenishment in a small, independent quick-service or casual-dining site, "
-        "which is the setting this project addresses.",
+        "materially from ordering ingredients against uncertain a la carte demand. None of the sources "
+        "reviewed studies replenishment in a small, independent quick-service or casual-dining site, "
+        "which is the setting this project addresses; Section 3.13 sets out the limits of the "
+        "search behind that statement.",
 
         "The gap this project occupies is therefore the conjunction of three things rather than "
         "any one of them: an end-to-end pipeline from daily item-level forecast to constrained, "
