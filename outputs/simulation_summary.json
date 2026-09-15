@@ -1,0 +1,228 @@
+{
+  "start": "2025-07-01",
+  "end": "2025-12-31",
+  "baseline": {
+    "stockout_days": 202.0,
+    "stockout_units": 2959.4285714285716,
+    "unit_service_level": 98.89109309443694,
+    "day_service_level": 94.51086956521739,
+    "waste_units": 6573.785714285714,
+    "waste_share_of_supply": 2.4325191545057887,
+    "waste_cost": 6903.0650000000005,
+    "holding_cost": 221.28248189823876,
+    "ordering_cost": 987.5,
+    "stockout_cost": 8273.858571428571,
+    "total_cost": 16385.70605332681,
+    "average_inventory_units": 120.92408773291925,
+    "average_inventory_value": 87.79141944875776,
+    "orders_placed": 1530.0,
+    "total_demand": 266878.0,
+    "total_received": 270246.0
+  },
+  "ai": {
+    "stockout_days": 278.0,
+    "stockout_units": 4540.428571428572,
+    "unit_service_level": 98.29868757581045,
+    "day_service_level": 92.44565217391305,
+    "waste_units": 2363.785714285714,
+    "waste_share_of_supply": 0.8973039396450371,
+    "waste_cost": 3972.415,
+    "holding_cost": 169.9160572407045,
+    "ordering_cost": 987.5,
+    "stockout_cost": 10325.258571428572,
+    "total_cost": 15455.089628669277,
+    "average_inventory_units": 78.59256599378881,
+    "average_inventory_value": 67.41234879658386,
+    "orders_placed": 1512.0,
+    "total_demand": 266878.0,
+    "total_received": 263432.0
+  },
+  "comparison": [
+    {
+      "metric": "Stockout days (SKU-days)",
+      "key": "stockout_days",
+      "unit": "days",
+      "Manual par-level baseline": 202.0,
+      "AI forecast + inventory policy": 278.0,
+      "absolute_change": 76.0,
+      "improvement_pct": -37.6,
+      "better_when": "lower_is_better"
+    },
+    {
+      "metric": "Stockout units",
+      "key": "stockout_units",
+      "unit": "units",
+      "Manual par-level baseline": 2959.0,
+      "AI forecast + inventory policy": 4540.0,
+      "absolute_change": 1581.0,
+      "improvement_pct": -53.4,
+      "better_when": "lower_is_better"
+    },
+    {
+      "metric": "Service level (unit fill rate)",
+      "key": "unit_service_level",
+      "unit": "%",
+      "Manual par-level baseline": 98.89,
+      "AI forecast + inventory policy": 98.3,
+      "absolute_change": -0.59,
+      "improvement_pct": -0.6,
+      "better_when": "higher_is_better"
+    },
+    {
+      "metric": "Service level (days without stockout)",
+      "key": "day_service_level",
+      "unit": "%",
+      "Manual par-level baseline": 94.51,
+      "AI forecast + inventory policy": 92.45,
+      "absolute_change": -2.07,
+      "improvement_pct": -2.2,
+      "better_when": "higher_is_better"
+    },
+    {
+      "metric": "Waste units",
+      "key": "waste_units",
+      "unit": "units",
+      "Manual par-level baseline": 6574.0,
+      "AI forecast + inventory policy": 2364.0,
+      "absolute_change": -4210.0,
+      "improvement_pct": 64.0,
+      "better_when": "lower_is_better"
+    },
+    {
+      "metric": "Waste as share of stock received",
+      "key": "waste_share_of_supply",
+      "unit": "%",
+      "Manual par-level baseline": 2.43,
+      "AI forecast + inventory policy": 0.9,
+      "absolute_change": -1.54,
+      "improvement_pct": 63.1,
+      "better_when": "lower_is_better"
+    },
+    {
+      "metric": "Waste cost",
+      "key": "waste_cost",
+      "unit": "GBP",
+      "Manual par-level baseline": 6903.07,
+      "AI forecast + inventory policy": 3972.41,
+      "absolute_change": -2930.65,
+      "improvement_pct": 42.5,
+      "better_when": "lower_is_better"
+    },
+    {
+      "metric": "Holding cost",
+      "key": "holding_cost",
+      "unit": "GBP",
+      "Manual par-level baseline": 221.28,
+      "AI forecast + inventory policy": 169.92,
+      "absolute_change": -51.37,
+      "improvement_pct": 23.2,
+      "better_when": "lower_is_better"
+    },
+    {
+      "metric": "Ordering cost",
+      "key": "ordering_cost",
+      "unit": "GBP",
+      "Manual par-level baseline": 987.5,
+      "AI forecast + inventory policy": 987.5,
+      "absolute_change": 0.0,
+      "improvement_pct": 0.0,
+      "better_when": "lower_is_better"
+    },
+    {
+      "metric": "Stockout cost",
+      "key": "stockout_cost",
+      "unit": "GBP",
+      "Manual par-level baseline": 8273.86,
+      "AI forecast + inventory policy": 10325.26,
+      "absolute_change": 2051.4,
+      "improvement_pct": -24.8,
+      "better_when": "lower_is_better"
+    },
+    {
+      "metric": "Total cost",
+      "key": "total_cost",
+      "unit": "GBP",
+      "Manual par-level baseline": 16385.71,
+      "AI forecast + inventory policy": 15455.09,
+      "absolute_change": -930.62,
+      "improvement_pct": 5.7,
+      "better_when": "lower_is_better"
+    },
+    {
+      "metric": "Average inventory (units)",
+      "key": "average_inventory_units",
+      "unit": "units",
+      "Manual par-level baseline": 120.9,
+      "AI forecast + inventory policy": 78.6,
+      "absolute_change": -42.3,
+      "improvement_pct": 35.0,
+      "better_when": "lower_is_better"
+    },
+    {
+      "metric": "Average inventory value",
+      "key": "average_inventory_value",
+      "unit": "GBP",
+      "Manual par-level baseline": 87.79,
+      "AI forecast + inventory policy": 67.41,
+      "absolute_change": -20.38,
+      "improvement_pct": 23.2,
+      "better_when": "lower_is_better"
+    },
+    {
+      "metric": "Orders placed",
+      "key": "orders_placed",
+      "unit": "orders",
+      "Manual par-level baseline": 1530.0,
+      "AI forecast + inventory policy": 1512.0,
+      "absolute_change": -18.0,
+      "improvement_pct": 1.2,
+      "better_when": "lower_is_better"
+    }
+  ],
+  "matched_service_level": [
+    {
+      "reference_setting": 0.05,
+      "matched_service_level_pct": 96.76,
+      "matched_ai_service_level_setting": 0.7266,
+      "waste_units_baseline": 2498.8,
+      "waste_units_ai": 1853.7,
+      "waste_reduction_pct": 25.8,
+      "total_cost_baseline": 22501.94,
+      "total_cost_ai": 20161.98,
+      "cost_reduction_pct": 10.4,
+      "avg_inventory_baseline": 80.2,
+      "avg_inventory_ai": 61.0,
+      "inventory_reduction_pct": 24.0
+    },
+    {
+      "reference_setting": 0.1,
+      "matched_service_level_pct": 97.9,
+      "matched_ai_service_level_setting": 0.8969,
+      "waste_units_baseline": 3373.8,
+      "waste_units_ai": 2077.8,
+      "waste_reduction_pct": 38.4,
+      "total_cost_baseline": 18201.83,
+      "total_cost_ai": 15679.22,
+      "cost_reduction_pct": 13.9,
+      "avg_inventory_baseline": 92.7,
+      "avg_inventory_ai": 70.4,
+      "inventory_reduction_pct": 24.0
+    }
+  ],
+  "matched_waste": [
+    {
+      "reference_setting": 0.0,
+      "matched_waste_units": 1637.8,
+      "service_level_baseline": 94.8,
+      "service_level_ai": 95.94,
+      "service_level_gain_pp": 1.15
+    },
+    {
+      "reference_setting": 0.05,
+      "matched_waste_units": 2498.8,
+      "service_level_baseline": 96.76,
+      "service_level_ai": 98.38,
+      "service_level_gain_pp": 1.62
+    }
+  ]
+}

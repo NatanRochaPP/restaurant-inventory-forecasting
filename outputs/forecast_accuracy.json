@@ -1,0 +1,58 @@
+{
+  "n_folds": 12,
+  "horizon_days": 7,
+  "n_skus": 20,
+  "random_seed": 42,
+  "best_model": "Gradient Boosting",
+  "metrics": {
+    "Gradient Boosting": {
+      "sMAPE": 34.11,
+      "MASE": 0.65,
+      "WAPE": 29.25,
+      "bias": -0.29,
+      "interval_coverage": 0.97,
+      "sMAPE vs SNaive %": -14.4
+    },
+    "ETS (Holt-Winters)": {
+      "sMAPE": 34.22,
+      "MASE": 0.71,
+      "WAPE": 31.02,
+      "bias": -0.8,
+      "interval_coverage": 0.97,
+      "sMAPE vs SNaive %": -14.1
+    },
+    "Seasonal Naive": {
+      "sMAPE": 39.84,
+      "MASE": 0.93,
+      "WAPE": 39.41,
+      "bias": 0.97,
+      "interval_coverage": 0.97,
+      "sMAPE vs SNaive %": 0.0
+    },
+    "Croston": {
+      "sMAPE": 41.28,
+      "MASE": 1.06,
+      "WAPE": 39.01,
+      "bias": 0.35,
+      "interval_coverage": 0.98,
+      "sMAPE vs SNaive %": 3.6
+    },
+    "Croston (SBA)": {
+      "sMAPE": 41.73,
+      "MASE": 1.06,
+      "WAPE": 38.76,
+      "bias": -2.85,
+      "interval_coverage": 0.98,
+      "sMAPE vs SNaive %": 4.7
+    },
+    "Naive": {
+      "sMAPE": 46.65,
+      "MASE": 1.2,
+      "WAPE": 42.68,
+      "bias": -7.73,
+      "interval_coverage": 0.98,
+      "sMAPE vs SNaive %": 17.1
+    }
+  },
+  "note": "Features are frozen at each forecast origin and rolling statistics are computed within each SKU, so no fold can see its own evaluation window."
+}
