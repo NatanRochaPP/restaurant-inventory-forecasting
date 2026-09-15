@@ -1,0 +1,22 @@
+| sku              | abc   | xyz   | segment   |   annual_value |   demand_cv |   zero_day_share |
+|:-----------------|:------|:------|:----------|---------------:|------------:|-----------------:|
+| Chicken Breast   | A     | X     | AX        |       80164.8  |       0.284 |            0.003 |
+| Salmon Fillet    | A     | X     | AX        |       53235.2  |       0.36  |            0.027 |
+| Coffee Beans     | A     | X     | AX        |       37770.6  |       0.238 |            0.003 |
+| Bacon            | A     | X     | AX        |       27321.8  |       0.302 |            0.016 |
+| Milk             | A     | X     | AX        |       25099.5  |       0.215 |            0.003 |
+| Soft Drinks      | A     | X     | AX        |       21872.8  |       0.488 |            0.003 |
+| Fries (Potatoes) | A     | X     | AX        |       19764.3  |       0.314 |            0.003 |
+| Cooking Oil      | A     | X     | AX        |       19684.8  |       0.247 |            0.003 |
+| Lettuce          | A     | X     | AX        |       19029    |       0.326 |            0.003 |
+| Tomatoes         | A     | X     | AX        |       15516    |       0.315 |            0.003 |
+| Butter           | B     | X     | BX        |       15353.9  |       0.294 |            0.019 |
+| Truffle Oil      | B     | Z     | BZ        |       13855    |       1.074 |            0.452 |
+| Burger Buns      | B     | X     | BX        |       10377.2  |       0.298 |            0.003 |
+| Mushrooms        | B     | X     | BX        |        9436.35 |       0.354 |            0.044 |
+| Cheese Slices    | B     | X     | BX        |        8728.94 |       0.295 |            0.003 |
+| Onions           | C     | X     | CX        |        6626.5  |       0.258 |            0.003 |
+| Eggs             | C     | X     | CX        |        4627.36 |       0.26  |            0.003 |
+| Seasonal Berries | C     | Z     | CZ        |        3291.4  |       1.041 |            0.411 |
+| Gluten-free Buns | C     | Y     | CY        |        2267.1  |       0.783 |            0.285 |
+| Vegan Cheese     | C     | Y     | CY        |        1838.85 |       0.835 |            0.323 |
