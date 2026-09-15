@@ -35,20 +35,10 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class _FitCache:
-    """State of the cached global model."""
+    """The global model currently held, and the refit anchor it was fitted at."""
 
     model: GradientBoostingForecast | None = None
     fitted_as_of: pd.Timestamp | None = None
-
-    def is_stale(self, as_of: pd.Timestamp, refit_every_days: int) -> bool:
-        if self.model is None or self.fitted_as_of is None:
-            return True
-        # A model fitted at a later decision date has already seen demand that `as_of`
-        # must not see, so moving backwards in time always forces a refit. The refit
-        # cadence below is only meaningful when the decision date moves forward.
-        if as_of < self.fitted_as_of:
-            return True
-        return (as_of - self.fitted_as_of).days >= refit_every_days
 
 
 class ForecastService:
@@ -83,15 +73,18 @@ class ForecastService:
         self.promo_calendar = sales[["date", "sku", "promo"]]
         self.selector = ModelSelector(config, strategy="rule")
         self._choices = model_choices
-        # A selection supplied by the caller is authoritative. One computed lazily is
-        # remembered along with the date it was made at, so that moving backwards can
-        # detect it (see model_choices).
+        # A selection supplied by the caller is authoritative. One computed lazily is made
+        # at the decision date's refit anchor and remembered with that anchor (see
+        # model_choices), so, like the global model, it depends on the date alone.
         self._choices_are_fixed = model_choices is not None
-        self._choices_as_of: pd.Timestamp | None = None
+        self._choices_anchor: pd.Timestamp | None = None
         self._cache = _FitCache()
-        # Base-case forecasts are deterministic given (as_of, horizon), so they are
-        # memoised. This makes repeated simulation runs - a service-level sweep, for
-        # instance - reuse one set of forecasts instead of refitting for each run.
+        # Base-case forecasts are memoised by (as_of, horizon). That is valid only because
+        # the global model serving a date, and any routing chosen lazily, are fixed by the
+        # date itself (see refit_anchor and model_choices), so a memoised forecast is
+        # exactly what a fresh service would produce. It lets
+        # repeated simulation runs - a service-level sweep, for instance - reuse one set
+        # of forecasts instead of refitting for each run.
         self._forecast_cache: dict[tuple[pd.Timestamp, int], dict[str, ForecastResult]] = {}
 
     # -- model selection ---------------------------------------------------------------
@@ -100,23 +93,21 @@ class ForecastService:
         """Return the per-SKU model selection, computing it on first use.
 
         A selection passed to the constructor is authoritative and is never recomputed.
-        A lazily computed one is reused as the decision date moves forward, but an
-        earlier decision date forces a fresh selection: which model a SKU is routed to
-        is itself a decision, and reusing a later date's routing would let history that
-        date cannot see make it.
+        A lazily computed one is made at the refit anchor of the decision date (see
+        refit_anchor) and recomputed whenever the anchor changes. Routing is itself a
+        decision: made at the anchor, it never uses history the date cannot see, and it
+        does not depend on which dates were requested before. Without a date, the
+        selection uses all history.
         """
         if self._choices_are_fixed:
             return self._choices  # type: ignore[return-value]
-        as_of = pd.Timestamp(as_of) if as_of is not None else None
-        went_backwards = (
-            as_of is not None and self._choices_as_of is not None and as_of < self._choices_as_of
-        )
-        if self._choices is None or went_backwards:
+        anchor = self.refit_anchor(as_of) if as_of is not None else None
+        if self._choices is None or anchor != self._choices_anchor:
             from src.data.loader import build_sku_master
 
             master = build_sku_master(self.sales, self.config)
-            self._choices = self.selector.select(self.sales, master, as_of=as_of)
-            self._choices_as_of = as_of
+            self._choices = self.selector.select(self.sales, master, as_of=anchor)
+            self._choices_anchor = anchor
         return self._choices
 
     def model_for(self, sku: str, as_of: pd.Timestamp | None = None) -> ModelChoice:
@@ -191,7 +182,7 @@ class ForecastService:
         results: dict[str, ForecastResult] = {}
         gb_skus = [s for s in targets if choices.get(s) and choices[s].model_name == GRADIENT_BOOSTING]
         if gb_skus:
-            model = self._global_model(history, as_of)
+            model = self._global_model(as_of)
             gb_future = future[future["sku"].isin(gb_skus)]
             for res in model.predict_panel(gb_future):
                 results[res.sku] = res
@@ -204,7 +195,7 @@ class ForecastService:
                 raise KeyError(f"SKU '{sku}' has no model selection.")
             model = self.selector.build(choice)
             if model is None:  # gradient boosting requested for an unlisted SKU
-                model = self._global_model(history, as_of)
+                model = self._global_model(as_of)
                 results[sku] = model.predict(future[future["sku"] == sku])
                 continue
             sku_history = history[history["sku"] == sku]
@@ -288,7 +279,7 @@ class ForecastService:
         result = self.forecast_sku(as_of, sku, horizon, scenario)
         history = history_as_of(self.sales, as_of, sku=sku)
         model = (
-            self._global_model(history_as_of(self.sales, as_of), as_of)
+            self._global_model(as_of)
             if result.model_name == GRADIENT_BOOSTING
             else None
         )
@@ -306,15 +297,36 @@ class ForecastService:
 
     # -- internals ---------------------------------------------------------------------
 
-    def _global_model(self, history: pd.DataFrame, as_of: pd.Timestamp) -> GradientBoostingForecast:
-        """Return the cached global model, refitting only on the configured cadence."""
-        if self._cache.is_stale(as_of, self.config.forecast.refit_frequency_days):
-            logger.debug("Refitting the global model at %s", as_of.date())
-            model = GradientBoostingForecast(self.config, self.encoder).fit(history)
-            self._cache = _FitCache(model=model, fitted_as_of=as_of)
+    def refit_anchor(self, as_of: pd.Timestamp) -> pd.Timestamp:
+        """The date the global model serving ``as_of`` is fitted at.
+
+        Refits fall every ``forecast.refit_frequency_days`` days on a grid anchored at
+        ``simulation.start_date`` and extended in both directions. The model for a decision
+        date is fitted at the latest grid date on or before it, so it depends on that date
+        alone and never on which dates were forecast earlier, and it never sees demand the
+        decision could not. If the anchor falls within ``forecast.min_history_days`` of the
+        start of the data, too little history precedes it to fit on, so the model is fitted
+        at ``as_of`` itself, which is equally a function of the date alone.
+        """
+        as_of = pd.Timestamp(as_of)
+        cadence = self.config.forecast.refit_frequency_days
+        origin = pd.Timestamp(self.config.simulation.start_date)
+        anchor = origin + pd.Timedelta(days=cadence * ((as_of - origin).days // cadence))
+        earliest = pd.Timestamp(self.sales["date"].min()) + pd.Timedelta(days=self.config.forecast.min_history_days)
+        if anchor < earliest:
+            return as_of
+        return anchor
+
+    def _global_model(self, as_of: pd.Timestamp) -> GradientBoostingForecast:
+        """Return the global model for ``as_of``, fitting it at its refit anchor if needed."""
+        anchor = self.refit_anchor(as_of)
+        if self._cache.model is None or self._cache.fitted_as_of != anchor:
+            logger.debug("Fitting the global model at %s for decision date %s", anchor.date(), pd.Timestamp(as_of).date())
+            model = GradientBoostingForecast(self.config, self.encoder).fit(history_as_of(self.sales, anchor))
+            self._cache = _FitCache(model=model, fitted_as_of=anchor)
         return self._cache.model  # type: ignore[return-value]
 
     @property
     def last_fit_date(self) -> pd.Timestamp | None:
-        """Decision date of the most recent global-model fit."""
+        """Refit anchor of the global model currently held."""
         return self._cache.fitted_as_of
