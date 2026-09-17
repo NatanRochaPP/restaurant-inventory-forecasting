@@ -519,6 +519,41 @@ def order_sheet(
     return pd.DataFrame(rows).sort_values("Order (units)", ascending=False).reset_index(drop=True)[columns]
 
 
+MONEY_KEYS = ("waste_cost", "stockout_cost", "holding_cost", "ordering_cost", "total_cost")
+
+
+def money_saved(baseline_kpis: dict, ai_kpis: dict) -> dict[str, float]:
+    """Pounds saved by following the forecast-driven policy instead of the manual par level.
+
+    Each value is the baseline cost minus the AI cost over the same replay, so a positive
+    figure is money saved and a negative one is money the AI policy cost extra. Waste is
+    returned alongside the other costs on purpose: at a policy's configured settings a
+    waste saving can be bought with extra shortages, and a waste figure on its own would
+    hide that trade.
+
+    Raises:
+        KeyError: If either KPI dictionary lacks one of the cost measures.
+    """
+    missing = [k for k in MONEY_KEYS if k not in baseline_kpis or k not in ai_kpis]
+    if missing:
+        raise KeyError(f"KPIs are missing cost measures: {', '.join(missing)}")
+    return {key: float(baseline_kpis[key]) - float(ai_kpis[key]) for key in MONEY_KEYS}
+
+
+def add_cost_saved(matched: pd.DataFrame) -> pd.DataFrame:
+    """Add the pounds saved at each matched service level to a matched comparison.
+
+    ``total_cost_saved`` is the baseline's total cost minus the AI policy's at the same
+    achieved service level, which is the fair reading of money saved (see the frontier).
+    """
+    required = {"total_cost_baseline", "total_cost_ai"}
+    if not required.issubset(matched.columns):
+        raise KeyError(f"Matched comparison needs columns {sorted(required)}")
+    out = matched.copy()
+    out["total_cost_saved"] = out["total_cost_baseline"] - out["total_cost_ai"]
+    return out
+
+
 def apply_overrides(
     recommendations: list[OrderRecommendation],
     overrides: dict[str, float],

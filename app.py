@@ -21,12 +21,14 @@ import streamlit as st
 
 from src.app_services import (
     DashboardContext,
+    add_cost_saved,
     apply_overrides,
     build_context,
     build_recommendations,
     compare_strategies,
     default_as_of,
     forecast_accuracy_summary,
+    money_saved,
     order_sheet,
     overview_metrics,
     recent_forecast_accuracy,
@@ -773,6 +775,39 @@ def page_simulation(context: DashboardContext, as_of: pd.Timestamp) -> None:
         "frontier below before drawing conclusions from a single pair of runs."
     )
 
+    st.subheader("Money saved by following the AI")
+    saved = money_saved(results["baseline_kpis"], results["ai_kpis"])
+
+    def pounds(value: float) -> str:
+        return f"£{value:,.2f} saved" if value >= 0 else f"£{-value:,.2f} extra"
+
+    row = st.columns(4)
+    row[0].metric(
+        "Waste cost",
+        pounds(saved["waste_cost"]),
+        help="Value of stock written off under the manual par level minus under the AI policy.",
+    )
+    row[1].metric(
+        "Stockout cost",
+        pounds(saved["stockout_cost"]),
+        help="Cost of unmet demand. Shown beside waste because a waste saving can be bought with shortages.",
+    )
+    row[2].metric(
+        "Holding and ordering",
+        pounds(saved["holding_cost"] + saved["ordering_cost"]),
+        help="Cost of stock held plus the cost of placing orders.",
+    )
+    row[3].metric(
+        "Total cost",
+        pounds(saved["total_cost"]),
+        help="All costs together: the overall money saved or lost over the replay.",
+    )
+    st.caption(
+        "Over the whole replay, at each policy's configured settings. At these settings the two "
+        "policies hold different amounts of stock, so part of the waste saving is paid for in "
+        "stockouts. Run the service-level sweep below for the saving at a matched service level."
+    )
+
     st.plotly_chart(
         kpi_comparison_chart(
             comparison,
@@ -801,6 +836,7 @@ def page_simulation(context: DashboardContext, as_of: pd.Timestamp) -> None:
         if matched.empty:
             st.warning("The two policies' service levels do not overlap; widen the sweep to compare them.")
         else:
+            matched = add_cost_saved(matched)
             st.dataframe(matched, use_container_width=True, hide_index=True)
             best = matched.loc[matched["waste_reduction_pct"].idxmax()]
             st.success(
@@ -809,6 +845,17 @@ def page_simulation(context: DashboardContext, as_of: pd.Timestamp) -> None:
                 f"{best['cost_reduction_pct']:.1f}% lower total cost and "
                 f"{best['inventory_reduction_pct']:.1f}% less average inventory."
             )
+            row = st.columns(len(matched))
+            for column, (_, point) in zip(row, matched.iterrows()):
+                column.metric(
+                    f"Money saved at {point['matched_service_level_pct']:.2f}% service",
+                    f"£{point['total_cost_saved']:,.2f}",
+                    help=(
+                        f"Total cost £{point['total_cost_baseline']:,.2f} under the manual par level "
+                        f"against £{point['total_cost_ai']:,.2f} under the AI policy, both reaching the "
+                        "same share of demand served."
+                    ),
+                )
         with st.expander("Sweep results"):
             st.dataframe(frontier, use_container_width=True, hide_index=True)
 
