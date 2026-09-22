@@ -27,6 +27,7 @@ from src.app_services import (
     compare_strategies,
     default_as_of,
     forecast_accuracy_summary,
+    order_sheet,
     overview_metrics,
     recent_forecast_accuracy,
     stock_positions,
@@ -440,6 +441,19 @@ def page_recommendations(context: DashboardContext, as_of: pd.Timestamp) -> None
     summary[1].metric("Recommended units", f"{order_view['recommended_order'].sum():,.0f}")
     summary[2].metric("Edited order value", f"£{final_value:,.2f}")
     summary[3].metric("SKUs edited", f"{int(order_view['overridden'].sum())}")
+
+    sheet = order_sheet(order_view, recommendations, as_of)
+    if sheet.empty:
+        st.caption("Nothing is due to be ordered for this date, so there is no order sheet to export.")
+    else:
+        st.download_button(
+            "Download the order sheet (CSV)",
+            data=sheet.to_csv(index=False).encode("utf-8"),
+            file_name=f"order_sheet_{as_of:%Y%m%d}.csv",
+            mime="text/csv",
+            help="The order as it stands, including any override already saved, with pack sizes "
+                 "and minimum order quantities for checking against the supplier.",
+        )
 
     with st.form("order_overview_editor"):
         edited = st.data_editor(

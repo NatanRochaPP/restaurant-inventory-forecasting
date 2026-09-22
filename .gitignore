@@ -44,3 +44,6 @@ docs/search_log.csv
 docs/*.docx
 outputs/report/fig_architecture.png
 outputs/report/screenshots/
+
+# Pipeline run logs are per-run, not evidence.
+outputs/logs/
