@@ -9,6 +9,7 @@ from pathlib import Path
 import pandas as pd
 
 from src.config import AppConfig, get_config
+from src.data.repair import repair_sales_frame
 from src.data.validation import DataValidationError, validate_sales_frame
 
 logger = logging.getLogger(__name__)
@@ -32,6 +33,7 @@ def load_sales(
     config: AppConfig | None = None,
     *,
     validate: bool = True,
+    repair: bool = False,
 ) -> pd.DataFrame:
     """Load the tidy daily sales dataset.
 
@@ -39,6 +41,10 @@ def load_sales(
         path: Optional CSV path. Defaults to ``data.sales_csv`` from the configuration.
         config: Application configuration; loaded from disk when omitted.
         validate: Run :func:`~src.data.validation.validate_sales_frame` after loading.
+        repair: Repair an imperfect feed before validating (see
+            :func:`~src.data.repair.repair_sales_frame`) and log what was changed. Off by
+            default, so the project's own dataset is still rejected if it breaks an
+            assumption rather than being quietly patched.
 
     Returns:
         A frame sorted by (sku, date) with a datetime ``date`` column.
@@ -61,6 +67,9 @@ def load_sales(
             df[col] = df[col].astype(dtype)
     df = df.sort_values(["sku", "date"], kind="stable").reset_index(drop=True)
 
+    if repair:
+        df, report = repair_sales_frame(df, config)
+        logger.info("%s", report.summary())
     if validate:
         validate_sales_frame(df, config)
     logger.info(
