@@ -73,6 +73,7 @@ Reproduce every result, in order:
 
 ```bash
 python baseline_forecasting.py           # regenerate the dataset + the original AE1 figures
+python scripts/run_all.py                # every step below, in order, logged to outputs/logs/
 python scripts/train_models.py           # segment SKUs, select and fit models, write the registry
 python scripts/run_backtest.py           # forecast accuracy  → outputs/forecast_accuracy.csv
 python scripts/run_simulation.py --frontier   # operational impact → outputs/simulation_comparison.csv
