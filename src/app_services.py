@@ -472,6 +472,53 @@ def compare_strategies(
     }
 
 
+def order_sheet(
+    order_view: pd.DataFrame,
+    recommendations: list[OrderRecommendation],
+    as_of: pd.Timestamp,
+) -> pd.DataFrame:
+    """The day's order as a sheet a manager can print, export or send to a supplier.
+
+    Only products with something to order are listed, largest first, with the pack size and
+    minimum order quantity beside each line so the quantity can be checked against what the
+    supplier will actually deliver. The recommended quantity stays next to the final one, so
+    an override remains visible on the sheet rather than being silently absorbed.
+
+    Args:
+        order_view: The frame from :func:`apply_overrides`.
+        recommendations: The recommendations behind that frame, for the supplier terms.
+        as_of: The decision date, written into the ``Order date`` column.
+
+    Returns:
+        One row per product to order, or an empty frame with the same columns when nothing
+        is due.
+    """
+    columns = ["Order date", "Product", "Order (units)", "Recommended (units)", "Overridden",
+               "Pack size", "Minimum order", "Unit cost (GBP)", "Line value (GBP)"]
+    terms = {r.sku: r for r in recommendations}
+    rows = []
+    for row in order_view.to_dict("records"):
+        if float(row["final_order"]) <= 0:
+            continue
+        rec = terms[row["sku"]]
+        rows.append(
+            {
+                "Order date": pd.Timestamp(as_of).date().isoformat(),
+                "Product": row["sku"],
+                "Order (units)": round(float(row["final_order"])),
+                "Recommended (units)": round(float(row["recommended_order"])),
+                "Overridden": "yes" if row["overridden"] else "no",
+                "Pack size": rec.pack_size,
+                "Minimum order": rec.min_order_quantity,
+                "Unit cost (GBP)": round(rec.unit_cost, 2),
+                "Line value (GBP)": round(float(row["final_value"]), 2),
+            }
+        )
+    if not rows:
+        return pd.DataFrame(columns=columns)
+    return pd.DataFrame(rows).sort_values("Order (units)", ascending=False).reset_index(drop=True)[columns]
+
+
 def apply_overrides(
     recommendations: list[OrderRecommendation],
     overrides: dict[str, float],
