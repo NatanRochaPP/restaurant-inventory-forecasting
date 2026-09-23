@@ -47,3 +47,6 @@ outputs/report/screenshots/
 
 # Pipeline run logs are per-run, not evidence.
 outputs/logs/
+
+# Local AI assistant instructions: kept on each machine, never committed
+CLAUDE.md
