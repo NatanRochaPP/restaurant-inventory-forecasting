@@ -37,11 +37,11 @@ forecast-driven ordering, **compared at a matched service level of 97.90%**:
 
 | Measure | Manual baseline | AI policy | Change |
 |---|---|---|---|
-| Waste (units) | 3,374 | 2,078 | **−38.4%** |
-| Total cost | £18,202 | £15,679 | **−13.9%** |
-| Average inventory (units) | 92.7 | 70.4 | **−24.0%** |
+| Waste (units) | 3,374 | 2,038 | **−39.6%** |
+| Total cost | £18,202 | £16,031 | **−11.9%** |
+| Average inventory (units) | 92.7 | 71.1 | **−23.3%** |
 
-Read at matched *waste* instead, the forecast-driven policy serves **1.6 percentage points** more
+Read at matched *waste* instead, the forecast-driven policy serves **1.32 to 1.66 percentage points** more
 demand. Both framings come from `outputs/frontier.csv`; see *Comparing the policies fairly* below
 for why a single pair of runs is not sufficient evidence.
 
@@ -132,7 +132,7 @@ src/
   persistence/                  SQLite schema and repository
 app.py                          Streamlit dashboard
 scripts/                        train_models.py, run_backtest.py, run_simulation.py
-tests/                          241 tests, including dedicated leakage tests
+tests/                          269 tests, including dedicated leakage tests
 baseline_forecasting.py         the original AE1 experiment, preserved unchanged
 ```
 
@@ -199,7 +199,7 @@ the naive family have no features to attribute and are explained through their o
 Any replenishment policy can trade waste for availability by holding more stock, so **two runs at
 different service levels cannot be ranked**. The manual baseline's flat 20% buffer happens to land
 at a 98.9% fill rate while the AI policy targets 95%; comparing those two runs directly would say
-the AI wastes 65% less *and* stocks out 55% more, which is an artefact of the operating point, not
+the AI wastes 66% less *and* stocks out 60% more, which is an artefact of the operating point, not
 a finding.
 
 `scripts/run_simulation.py --frontier` therefore sweeps both policies across their tuning parameter
@@ -211,7 +211,7 @@ range: less waste at equal availability, more availability at equal waste.
 shelf-life cap (`baseline.apply_shelf_life_cap: false`), because a par level set from average usage
 embodies no perishability logic — this is the one deliberate asymmetry between the policies, and it
 is what lets the baseline reach 99.3% availability at the cost of 25,726 wasted units. Second, the
-AI policy saturates near 98.5% availability: for a three-day-shelf-life product with a two-day lead
+AI policy saturates at 98.44% availability: for a three-day-shelf-life product with a two-day lead
 time, availability beyond that point cannot be bought with stock alone.
 
 ## Data-leakage protection
@@ -272,7 +272,7 @@ unit cost) are **stated assumptions**, not observed data, and should be cited as
 ## Testing
 
 ```bash
-python -m pytest tests/ -q            # 241 tests, about a minute
+python -m pytest tests/ -q            # 269 tests, about three minutes
 python -m pytest -m "not slow" -q     # skip the full-dataset end-to-end tests
 ```
 
