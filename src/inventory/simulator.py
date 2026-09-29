@@ -221,7 +221,7 @@ class InventorySimulator:
                 # 2. Remove expired stock before any demand can be served from it.
                 wasted_units, wasted_cost = state.ledger.remove_expired(day)
 
-                # Stock the ordering decision can actually see: delivered and unexpired.
+                # Stock the ordering decision can see: delivered and unexpired.
                 available_stock = state.ledger.on_hand
                 on_order = state.on_order
 

@@ -4,7 +4,7 @@ A scenario is a set of controlled deviations from the observed conditions - warm
 weather, a promotion, a longer supplier lead time, a stricter service level. Scenarios
 are applied to a *copy* of the feature frame and to the resulting forecast, and never
 touch the trained model or any persisted state, so the dashboard can explore them freely
-without corrupting the results the dissertation reports.
+without changing stored results.
 """
 
 from __future__ import annotations

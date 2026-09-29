@@ -298,10 +298,10 @@ def recent_forecast_accuracy(
 ) -> pd.DataFrame:
     """Replay the deployed forecast over the recent past, totalled across all products.
 
-    Every day is predicted from an origin that precedes it, exactly as the system would
+    Every day is predicted from an origin that precedes it, as the system would
     have done at the time: the models are refitted at each origin against
     :func:`~src.data.preprocessing.history_as_of`, so no day contributes to its own
-    prediction. What comes back is a record of how the forecast has actually performed,
+    prediction. What comes back is a record of how the forecast performed,
     not a fit scored on the data it was fitted to.
 
     Origins are spaced one horizon apart, so the windows tile the period without
@@ -357,7 +357,7 @@ def recent_forecast_accuracy(
     combined = pd.concat(frames, ignore_index=True)
     # Kept before the SKUs are summed: a shortfall of tomatoes is not cancelled by a
     # surplus of buns, so the total of the per-SKU absolute errors is the figure that
-    # says how much stock was actually misplaced.
+    # measures how much stock was misplaced.
     combined["sku_abs_error"] = (combined["predicted_units"] - combined["units_sold"]).abs()
     daily = (
         combined.groupby("date", as_index=False)
@@ -388,10 +388,11 @@ def forecast_accuracy_summary(daily: pd.DataFrame) -> dict:
 
     Two error scales are reported, and they answer different questions. The ``net_``
     figures compare the total forecast against total demand, so a SKU forecast too high
-    offsets one forecast too low - that is the right reading for total spend. The
-    ``sku_`` figures add the per-SKU errors up in absolute value before dividing, so
-    nothing cancels; that is the right reading for stock on a shelf, and it is the one
-    comparable to the backtest's reported accuracy.
+    offsets one forecast too low - that is the right reading for total spend. The ``sku_``
+    figures add the per-SKU errors up in absolute value before dividing, so nothing
+    cancels; that is the right reading for stock on a shelf. Both are weighted by volume,
+    so neither is directly comparable to the backtest accuracy, which weights each product
+    equally.
     """
     if daily.empty:
         return {}
@@ -481,7 +482,7 @@ def order_sheet(
 
     Only products with something to order are listed, largest first, with the pack size and
     minimum order quantity beside each line so the quantity can be checked against what the
-    supplier will actually deliver. The recommended quantity stays next to the final one, so
+    supplier will deliver. The recommended quantity stays next to the final one, so
     an override remains visible on the sheet rather than being silently absorbed.
 
     Args:
@@ -527,7 +528,7 @@ def money_saved(baseline_kpis: dict, ai_kpis: dict) -> dict[str, float]:
 
     Each value is the baseline cost minus the AI cost over the same replay, so a positive
     figure is money saved and a negative one is money the AI policy cost extra. Waste is
-    returned alongside the other costs on purpose: at a policy's configured settings a
+    returned alongside the other costs because at a policy's configured settings a
     waste saving can be bought with extra shortages, and a waste figure on its own would
     hide that trade.
 
@@ -544,7 +545,7 @@ def add_cost_saved(matched: pd.DataFrame) -> pd.DataFrame:
     """Add the pounds saved at each matched service level to a matched comparison.
 
     ``total_cost_saved`` is the baseline's total cost minus the AI policy's at the same
-    achieved service level, which is the fair reading of money saved (see the frontier).
+    achieved service level, which is the like-for-like measure of money saved.
     """
     required = {"total_cost_baseline", "total_cost_ai"}
     if not required.issubset(matched.columns):

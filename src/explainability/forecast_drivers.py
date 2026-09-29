@@ -5,7 +5,7 @@ predict the day twice, once with the real feature value and once with that featu
 to a neutral reference (a typical mid-week, non-holiday, non-promotion day at seasonal
 average temperature). The difference is reported as that feature's contribution.
 
-Two honesty constraints are built in:
+Two constraints apply to every explanation:
 
 * Ablation contributions do **not** sum exactly to the prediction, because the model
   contains interactions. They are presented as directional influences, never as an exact
@@ -68,7 +68,7 @@ class DriverContribution:
         return "increased" if self.contribution_units > 0 else "reduced"
 
     def describe(self) -> str:
-        """Manager-facing phrasing. Deliberately associative, never causal."""
+        """Manager-facing phrasing: associative, never causal."""
         magnitude = abs(self.contribution_units)
         match self.feature:
             case "weekend":

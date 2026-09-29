@@ -177,7 +177,7 @@ def service_level_for_segment(segment: SkuSegment, base_service_level: float) ->
 
     High-value A items justify tighter availability, while C items are held to a lower
     target because the cover would otherwise be paid for in waste. The adjustment is
-    deliberately small so that the headline configured level remains recognisable.
+    kept small so that the headline configured level remains recognisable.
 
     Args:
         segment: The SKU's segmentation outcome.

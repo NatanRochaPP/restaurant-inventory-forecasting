@@ -9,7 +9,7 @@ the AI policy targets the configured 95%.
 This module sweeps both policies across their tuning parameter - service level for the
 forecast-driven policy, buffer percentage for the manual one - and records where each
 lands. That produces a frontier of (service level, waste) pairs per policy, which
-supports two defensible claims:
+supports two comparisons:
 
 * at matched service level, one policy wastes less;
 * at matched waste, one policy serves more demand.
@@ -140,7 +140,7 @@ def _interpolate(frame: pd.DataFrame, x_col: str, y_col: str, x_value: float) ->
     """Linearly interpolate ``y`` at ``x_value`` along a monotonically sorted frame.
 
     Returns NaN when ``x_value`` lies outside the swept range, so that a comparison is
-    never reported by extrapolating beyond what was actually simulated.
+    never reported by extrapolating beyond what was simulated.
     """
     ordered = frame.sort_values(x_col)
     xs = ordered[x_col].to_numpy(dtype=float)

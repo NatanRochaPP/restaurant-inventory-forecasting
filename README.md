@@ -133,7 +133,7 @@ src/
 app.py                          Streamlit dashboard
 scripts/                        train_models.py, run_backtest.py, run_simulation.py
 tests/                          269 tests, including dedicated leakage tests
-baseline_forecasting.py         the original AE1 experiment, preserved unchanged
+baseline_forecasting.py         the original AE1 experiment; also generates the dataset
 ```
 
 ## How the system works

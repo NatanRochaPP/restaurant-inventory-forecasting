@@ -17,10 +17,10 @@ logger = logging.getLogger(__name__)
 class ETSForecast(UnivariateForecastModel):
     """Additive Holt-Winters with weekly seasonality.
 
-    Matches the AE1 baseline configuration (additive trend, additive seasonality,
-    estimated initialisation). If the optimiser fails - which happens on short or
-    highly intermittent series - the model falls back to a seasonal naive forecast and
-    records that fact in the result metadata rather than raising.
+    Uses additive trend, additive seasonality and estimated initialisation. If the
+    optimiser fails - which happens on short or highly intermittent series - the model
+    falls back to a seasonal naive forecast and records that fact in the result metadata
+    rather than raising.
 
     Args:
         seasonal_period: Seasonal cycle length in days.

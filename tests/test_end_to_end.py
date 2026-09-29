@@ -1,6 +1,6 @@
 """End-to-end tests over the real dataset.
 
-One test walks the whole pipeline the dissertation describes -
+One test walks the whole pipeline -
 data → features → segmentation → forecast → recommendation → explanation → simulation →
 evaluation → storage - and asserts that each stage hands a usable result to the next.
 
@@ -101,7 +101,7 @@ class TestFullPipeline:
         assert result.daily["date"].nunique() == 31
         assert len(result.daily) == 31 * 20
 
-        # 8. Evaluation produces the reported KPIs.
+        # 8. Evaluation produces the KPIs.
         kpis = compute_kpis(result.daily, result.orders)
         assert 0 <= kpis["unit_service_level"] <= 100
         assert kpis["waste_units"] >= 0
@@ -224,10 +224,10 @@ class TestResearchEvidence:
 
 class TestNavigationIndependence:
     def test_simulation_result_does_not_depend_on_dashboard_navigation(self):
-        """Regression: opening the Overview page before the Simulation page changed its numbers.
+        """Opening the Overview page first must not change the Simulation page's numbers.
 
-        Overview replays recent dates and memoises their forecasts; the simulation then reused
-        them although they came from models fitted on a different refit schedule.
+        Overview replays recent dates and memoises their forecasts; the simulation must not
+        reuse forecasts that came from models fitted on a different refit schedule.
         """
         from src.app_services import recent_forecast_accuracy
 

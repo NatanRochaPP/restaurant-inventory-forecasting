@@ -1,6 +1,5 @@
 """
-QHO656 Dissertation - Forecasting-Driven Inventory Resupply for Restaurants
-Baseline forecasting experiment (feasibility evidence for AE1 Progress Report, Section 3.3-3.4).
+Forecasting-Driven Inventory Resupply for Restaurants: baseline forecasting experiment.
 
 Generates a reproducible 24-month synthetic single-site restaurant sales dataset with
 weekly seasonality, UK bank-holiday effects, weather sensitivity and promotions, then
@@ -10,7 +9,8 @@ back-tests four forecasting approaches with rolling-origin cross-validation:
     - ETS              (Holt-Winters additive, weekly seasonality)
     - Gradient Boosting (feature-based global ML model, LightGBM stand-in)
 
-Metrics: sMAPE, MASE, WAPE. Outputs Figures 1-4 and results_table.csv for Appendix C.
+Metrics: sMAPE, MASE, WAPE. Writes data/sales_data.csv, four figures, results_table.csv
+and results_summary.json.
 
 Author: Natan Rocha Paiva
 Reproducible: fixed random seed. Run:  python baseline_forecasting.py
@@ -330,7 +330,7 @@ fig.savefig(os.path.join(OUT, "fig3_forecast_vs_actual.png"), bbox_inches="tight
 plt.close(fig)
 
 # --------------------------------------------------------------------------------------
-# 9. Figure 4: Gantt chart matching the Section 4 milestone table (June-Nov 2026)
+# 9. Figure 4: project schedule Gantt chart (June-Nov 2026)
 # --------------------------------------------------------------------------------------
 tasks = [
     ("Scoping, ethics, background reading", "2026-06-01", "2026-06-21", "done"),
@@ -362,7 +362,7 @@ fig.savefig(os.path.join(OUT, "fig4_gantt.png"), bbox_inches="tight")
 plt.close(fig)
 
 # --------------------------------------------------------------------------------------
-# 10. Save headline numbers for the report
+# 10. Save headline numbers
 # --------------------------------------------------------------------------------------
 summary = {
     "rows": int(len(df)), "skus": int(df.sku.nunique()), "days": int(df.date.nunique()),

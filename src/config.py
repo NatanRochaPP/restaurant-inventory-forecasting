@@ -3,7 +3,7 @@
 All operational assumptions (horizons, service levels, costs, supplier calendar,
 per-SKU economics) are declared in ``config/config.yaml`` and validated here with
 Pydantic. Modules must read values from an :class:`AppConfig` instance rather than
-hard-coding constants, so that every assumption behind a published result is
+hard-coding constants, so that every assumption behind a result is
 inspectable in one file.
 """
 

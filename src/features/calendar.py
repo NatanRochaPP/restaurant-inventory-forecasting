@@ -1,10 +1,8 @@
 """Calendar features: day of week, weekends, UK bank holidays and school holidays.
 
-Calendar effects are the part of demand that is genuinely known in advance, which is
-what makes them legitimate forecast inputs for a future date (see the research question
-in README.md). The bank-holiday list mirrors the one used by ``baseline_forecasting.py``
-so that features remain comparable with the AE1 baseline results; that script is left
-untouched as frozen evidence.
+Calendar effects are the part of demand that is known in advance, which is what makes
+them legitimate forecast inputs for a future date. The bank-holiday list matches the one
+in ``baseline_forecasting.py``, which generates the dataset.
 """
 
 from __future__ import annotations

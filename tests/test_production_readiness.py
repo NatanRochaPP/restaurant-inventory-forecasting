@@ -205,7 +205,7 @@ class TestOrderSheet:
 @pytest.mark.skipif(not (pathlib.Path(__file__).resolve().parents[1] / "data" / "sales_data.csv").exists(),
                     reason="project dataset not present")
 def test_repair_leaves_the_projects_own_dataset_untouched(config):
-    """Eval: turning repair on must not quietly change the data every reported result rests on."""
+    """Turning repair on must not change the project's own dataset."""
     from src.data.loader import load_sales
 
     plain = load_sales(config=config)

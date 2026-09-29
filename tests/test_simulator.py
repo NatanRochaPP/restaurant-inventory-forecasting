@@ -1,9 +1,9 @@
 """Tests for the inventory simulator, the ordering strategies and chronology.
 
 The leakage tests in :class:`TestNoDataLeakage` are the most important in the suite. If
-a future observation can reach a past ordering decision, every operational result the
-dissertation reports is invalid, so the guarantee is tested by tampering with future
-demand and asserting that nothing upstream changes.
+a future observation can reach a past ordering decision, every simulated result is
+invalid, so the guarantee is tested by tampering with future demand and asserting that
+nothing upstream changes.
 """
 
 from __future__ import annotations
@@ -184,7 +184,7 @@ class TestOrderingStrategies:
 
         Under the default calendar (order Mon/Wed/Fri, two-day lead time) every delivery
         lands exactly on the next order day, so the pipeline is empty at each review. A
-        four-day lead time creates genuine overlap and exercises the guard against
+        four-day lead time creates overlap and exercises the guard against
         ordering again for demand that is already covered.
         """
         slow = config.model_copy(
@@ -237,7 +237,7 @@ class TestSimulationCosts:
 
 
 class TestNoDataLeakage:
-    """The decisive tests: no future information may reach a past decision."""
+    """No future information may reach a past decision."""
 
     def test_recommendations_are_unchanged_when_future_demand_is_tampered_with(
         self, synthetic_panel, config, master

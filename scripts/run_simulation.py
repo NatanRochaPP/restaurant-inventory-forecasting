@@ -2,8 +2,7 @@
 
 Replays the holdout period day by day under both policies, writes the KPI comparison to
 ``outputs/`` and SQLite, and optionally sweeps both policies across their tuning
-parameter so they can be compared at a matched service level - which is the only
-defensible way to rank two replenishment policies.
+parameter so they can be compared at a matched service level.
 
 Usage::
 

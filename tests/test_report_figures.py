@@ -1,11 +1,8 @@
-"""The figures must not number themselves.
+"""Chart titles carry no figure numbers.
 
-Every chart used to carry a "Figure N" prefix in its own title. The report numbers its
-figures by the order they appear in it, and once it gained a schedule, an architecture
-diagram, a screenshot and an entity-relationship diagram, seven of the eight charts
-showed a number that disagreed with the caption printed underneath them. The caption is
-the only place a figure number belongs, so the titles say what the chart shows and
-nothing else, and no chart refers to another by number.
+A figure number belongs to the caption of the document a chart is placed in, so each
+title only says what its chart shows, and no annotation refers to another chart by
+number.
 """
 from __future__ import annotations
 

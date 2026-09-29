@@ -1,4 +1,4 @@
-"""Order recommendation: from policy target to a quantity a manager can actually order.
+"""Order recommendation: from policy target to a quantity a manager can order.
 
 A raw ``target stock - inventory position`` figure is not an order. Suppliers sell in
 cases, impose minimum quantities, and a fresh product ordered beyond what the kitchen can
@@ -191,7 +191,7 @@ def apply_order_constraints(
 ) -> tuple[float, list[ConstraintAdjustment]]:
     """Apply shelf-life, sizing and packaging constraints in a fixed order.
 
-    The sequence is deliberate:
+    The order of the steps matters:
 
     1. cap by what can be sold before the delivery expires (perishability);
     2. cap by the configured maximum days of supply (guards against a runaway forecast);

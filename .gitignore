@@ -29,7 +29,7 @@ Thumbs.db
 data/*.db
 models/*.joblib
 
-# Dissertation report tooling: kept locally only, never committed
+# Report-writing tools: kept locally, not part of the application
 scripts/generate_dissertation_draft.py
 scripts/literature_text.py
 scripts/reflection_text.py
@@ -46,15 +46,12 @@ docs/*.docx
 # Pipeline run logs are per-run, not evidence.
 outputs/logs/
 
-# Local AI assistant instructions: kept on each machine, never committed
-CLAUDE.md
-
 # Report figures and tables: scripts/run_all.py (or generate_report_figures.py)
 # rebuilds all of them from the CSVs in outputs/, so they are not tracked.
 outputs/report/
 
-# AE1 prototype outputs: baseline_forecasting.py rewrites these every run and
-# nothing reads them; the reported results come from the pipeline's files above.
+# Outputs of baseline_forecasting.py: rewritten on every run and not read by the
+# pipeline.
 outputs/fig1_weekly_seasonality.png
 outputs/fig2_holiday_spikes.png
 outputs/fig3_forecast_vs_actual.png

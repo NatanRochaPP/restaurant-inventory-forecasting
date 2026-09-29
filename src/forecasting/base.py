@@ -134,7 +134,7 @@ class UnivariateForecastModel(ForecastModel):
     standard deviation, and turning a point forecast into a prediction interval.
 
     Args:
-        service_level: Coverage of the prediction interval reported to the user.
+        service_level: Coverage of the prediction interval.
     """
 
     def __init__(self, service_level: float = 0.95) -> None:
@@ -207,7 +207,7 @@ class UnivariateForecastModel(ForecastModel):
 
     @staticmethod
     def _residual_sigma(residuals: np.ndarray) -> float:
-        """Robust-ish standard deviation of one-step-ahead residuals."""
+        """Sample standard deviation of the finite residuals; zero with fewer than two."""
         res = np.asarray(residuals, dtype=float)
         res = res[np.isfinite(res)]
         if res.size < 2:
