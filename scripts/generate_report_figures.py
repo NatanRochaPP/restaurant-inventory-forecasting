@@ -40,7 +40,6 @@ BLUE, ORANGE = "#2a78d6", "#eb6834"
 RED, GREEN = "#d03b3b", "#0ca30c"
 INK, INK2, GRID = "#0b0b0b", "#52514e", "#e9e8e4"
 POUND = "£"
-DASH = "—"
 
 BASELINE_LABEL = "Manual par-level baseline"
 AI_LABEL = "AI forecast + inventory policy"
@@ -101,7 +100,7 @@ def figure_accuracy(metrics: pd.DataFrame) -> None:
             ax.axvline(1.0, color=INK2, lw=1, ls=":", zorder=4)
             ax.text(1.0, len(order) - 0.3, " seasonal naive = 1.0", fontsize=7, color=INK2, va="bottom")
     fig.suptitle(
-        f"Figure 1 {DASH} Forecast accuracy by model (12-fold rolling origin, 7-day horizon, 20 SKUs)",
+        "Forecast accuracy by model (12-fold rolling origin, 7-day horizon, 20 SKUs)",
         fontweight="bold", x=0.005, ha="left", y=1.05,
     )
     fig.tight_layout()
@@ -150,7 +149,7 @@ def figure_segmentation(segmentation: pd.DataFrame, selection: pd.DataFrame) -> 
     ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{POUND}{v:,.0f}"))
     ax.minorticks_off()
     ax.legend(loc="upper center", bbox_to_anchor=(0.62, 1.0), fontsize=8)
-    ax.set_title(f"Figure 2 {DASH} ABC/XYZ segmentation and the model routed to each SKU", loc="left")
+    ax.set_title("ABC/XYZ segmentation and the model routed to each SKU", loc="left")
     fig.text(0.005, -0.03,
              "The four SKUs with intermittent demand (Z and high-CV Y segments) are routed to Croston (SBA); "
              "the remaining 16 use\ngradient boosting. Marker shape as well as colour distinguishes the two, "
@@ -186,7 +185,7 @@ def figure_forecast_example(predictions: pd.DataFrame, sku: str = "Fries (Potato
     ax.legend(ncol=3, loc="upper left")
     ax.set_ylim(bottom=0)
     ax.set_title(
-        f"Figure 3 {DASH} Seven-day forecast against realised demand ({sku}, final backtest fold)",
+        f"Seven-day forecast against realised demand ({sku}, final backtest fold)",
         loc="left",
     )
     fig.autofmt_xdate(rotation=0, ha="center")
@@ -251,7 +250,7 @@ def figure_frontier(frontier: pd.DataFrame, matched: pd.DataFrame) -> None:
         )
     ax.legend(loc="upper left", bbox_to_anchor=(0, 0.93))
     ax.set_title(
-        f"Figure 4 {DASH} Waste against service level: both policies across their full operating range",
+        "Waste against service level: both policies across their full operating range",
         loc="left",
     )
     fig.text(
@@ -287,14 +286,14 @@ def figure_kpi_comparison(comparison: pd.DataFrame) -> None:
     ax.legend(ncol=2, loc="upper right")
     ax.set_ylim(0, max(indexed.max() * 1.3, 130))
     ax.set_title(
-        f"Figure 5 {DASH} Operational outcomes, forecast-driven policy relative to the manual baseline",
+        "Operational outcomes, forecast-driven policy relative to the manual baseline",
         loc="left",
     )
     fig.text(
         0.005, -0.07,
         "Both policies at their configured settings, which places them at different service levels "
-        "(98.9% baseline vs 98.3% AI).\nThis figure is therefore descriptive only; Figure 4 provides the "
-        "like-for-like comparison.",
+        "(98.9% baseline vs 98.3% AI).\nThis figure is therefore descriptive only; the waste against service level chart "
+        "provides the like-for-like comparison.",
         fontsize=7.5, color=INK2, ha="left",
     )
     fig.tight_layout()
@@ -325,7 +324,7 @@ def figure_over_time(baseline_daily: pd.DataFrame, ai_daily: pd.DataFrame) -> No
         ax.set_ylim(bottom=0)
     axes[0].legend(ncol=2, loc="upper left")
     axes[0].set_title(
-        f"Figure 6 {DASH} Waste, unmet demand and stock held across the holdout (7-day rolling mean)",
+        "Waste, unmet demand and stock held across the holdout (7-day rolling mean)",
         loc="left",
     )
     fig.tight_layout()
@@ -359,7 +358,7 @@ def figure_per_sku(ai: pd.DataFrame, baseline: pd.DataFrame) -> None:
     ax.set_xlim(-span * 0.03, span * 1.18)
     ax.legend(loc="lower right")
     ax.set_title(
-        f"Figure 7 {DASH} Waste by SKU: only short-shelf-life items can waste, and that is where the gain is",
+        "Waste by SKU: only short-shelf-life items can waste, and that is where the gain is",
         loc="left",
     )
     fig.tight_layout()
@@ -396,7 +395,7 @@ def figure_drivers() -> None:
     ax.set_xlabel("Units added to / removed from a typical midweek day, summed over the 7-day horizon")
     ax.grid(axis="y", visible=False)
     ax.set_title(
-        f"Figure 8 {DASH} Forecast drivers: {sku}, week of the August bank holiday ({as_of:%d %b %Y})",
+        f"Forecast drivers: {sku}, week of the August bank holiday ({as_of:%d %b %Y})",
         loc="left",
     )
     fig.text(
