@@ -1,3 +1,0 @@
-reference_setting,matched_service_level_pct,matched_ai_service_level_setting,waste_units_baseline,waste_units_ai,waste_reduction_pct,total_cost_baseline,total_cost_ai,cost_reduction_pct,avg_inventory_baseline,avg_inventory_ai,inventory_reduction_pct
-0.05,96.76,0.7406,2498.8,1784.6,28.6,22501.94,20081.46,10.8,80.2,61.0,24.0
-0.1,97.9,0.9081,3373.8,2037.5,39.6,18201.83,16030.74,11.9,92.7,71.1,23.3

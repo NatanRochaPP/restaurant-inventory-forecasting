@@ -42,11 +42,13 @@ tests/test_references.py
 tests/test_citations.py
 docs/search_log.csv
 docs/*.docx
-outputs/report/fig_architecture.png
-outputs/report/screenshots/
 
 # Pipeline run logs are per-run, not evidence.
 outputs/logs/
 
 # Local AI assistant instructions: kept on each machine, never committed
 CLAUDE.md
+
+# Report figures and tables: scripts/run_all.py (or generate_report_figures.py)
+# rebuilds all of them from the CSVs in outputs/, so they are not tracked.
+outputs/report/
