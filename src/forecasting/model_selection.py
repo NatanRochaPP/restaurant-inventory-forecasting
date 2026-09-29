@@ -17,7 +17,7 @@ Two strategies are available:
     model registry.
 
 Both record a :class:`ModelChoice` naming the model, the segment and the reason, so the
-dissertation can state exactly which method produced each SKU's numbers.
+method behind each SKU's forecast is on record.
 """
 
 from __future__ import annotations

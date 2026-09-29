@@ -13,11 +13,9 @@ Two entry points exist and they must stay consistent:
     observation, so no value from inside the forecast window can influence its own
     prediction.
 
-The AE1 baseline script computed ``roll28`` with ``groupby(...).shift(1).rolling(28)``,
-which rolled across SKU boundaries and then re-aligned onto the wrong rows via
-``reset_index(drop=True)``. ``engineer_features`` uses ``groupby.transform`` instead;
-the two differ on 87% of rows (correlation 0.19), so results produced here are not
-directly comparable with the AE1 table without re-running the backtest.
+Rolling statistics are computed with ``groupby(...).transform`` so that every window
+stays inside one SKU. A plain ``groupby(...).shift(1).rolling(28)`` rolls across SKU
+boundaries and, after ``reset_index(drop=True)``, lands on the wrong rows.
 """
 
 from __future__ import annotations
@@ -144,7 +142,7 @@ def engineer_features(
         df[f"lag{k}"] = grouped.shift(k).astype("float32")
     for w in config.features.rolling_windows:
         # shift(1) first so the window ends on the previous day, then roll *within* the
-        # SKU via transform - the point the AE1 script got wrong.
+        # SKU via transform, so no window reaches into another SKU.
         df[f"roll{w}"] = grouped.transform(
             lambda s, _w=w: s.shift(1).rolling(_w, min_periods=_w).mean()
         ).astype("float32")

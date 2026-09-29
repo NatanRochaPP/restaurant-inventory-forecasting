@@ -272,14 +272,14 @@ class TestRecentForecastAccuracy:
         assert not daily["date"].duplicated().any()  # the windows tile, never overlap
 
     def test_a_days_prediction_cannot_see_its_own_demand(self, synthetic_panel, config):
-        """The decisive test: corrupt the last window; no prediction may move.
+        """Corrupt the last window; no prediction may move.
 
         Tampering starts at the final origin, so no origin's history contains a tampered
         day - the earlier origins are fitted well before it, and the final origin sees
         only data strictly before itself. Every prediction in the replay must therefore
         be unchanged even though the demand it is scored against is a hundred times
         larger. Note that tampering from an *earlier* origin would legitimately move the
-        later predictions, because by then those days are genuinely past.
+        later predictions, because by then those days are past.
         """
         horizon = config.forecast.horizon_days
         last_origin = self.AS_OF - pd.Timedelta(days=horizon)
@@ -292,7 +292,7 @@ class TestRecentForecastAccuracy:
         leaked = recent_forecast_accuracy(_context_for(tampered, config), self.AS_OF, 28)
 
         np.testing.assert_allclose(leaked["predicted_units"], clean["predicted_units"])
-        # The actuals must genuinely have moved, or the assertion above proves nothing.
+        # The actuals must have moved, or the assertion above proves nothing.
         assert leaked["actual_units"].sum() > clean["actual_units"].sum()
 
     def test_too_little_history_returns_an_empty_frame_rather_than_failing(

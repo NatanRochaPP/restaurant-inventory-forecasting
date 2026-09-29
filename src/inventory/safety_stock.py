@@ -4,7 +4,7 @@ Safety stock buys availability with cash and, for perishable food, with waste. I
 sized from *forecast error* rather than raw demand variability: a SKU whose demand swings
 predictably with the weekend does not need cover for that swing, because the forecast
 already anticipates it. Using raw demand standard deviation would systematically
-over-order on exactly the fast-moving fresh items where waste is most expensive.
+over-order on the fast-moving fresh items where waste is most expensive.
 """
 
 from __future__ import annotations
@@ -80,8 +80,8 @@ def expected_demand_over(daily_forecast: np.ndarray | list[float], days: float) 
     """Total expected demand over the first ``days`` of a daily forecast.
 
     Fractional days are interpolated. When the requested window is longer than the
-    forecast, the mean of the forecast is used to extrapolate the remainder, which is
-    the honest option: the model has no information beyond its horizon.
+    forecast, the mean of the forecast extends it, because the model has no information
+    beyond its horizon.
 
     Args:
         daily_forecast: Point forecast per day, ordered from the decision date.

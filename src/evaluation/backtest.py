@@ -2,11 +2,10 @@
 
 Random train/test splitting is invalid for time series, so evaluation uses an expanding
 window: for each origin the models see only data strictly before it and are scored on
-the following ``horizon`` days. The layout matches the AE1 baseline (12 folds, 7-day
-horizon) so the two sets of numbers are comparable.
+the following ``horizon`` days. The default layout is 12 folds with a 7-day horizon.
 
 Every fold rebuilds its features from :func:`~src.data.preprocessing.history_as_of`,
-which is what keeps the exercise honest: no fold can see its own evaluation window.
+so no fold can see its own evaluation window.
 """
 
 from __future__ import annotations

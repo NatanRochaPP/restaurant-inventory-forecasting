@@ -222,10 +222,9 @@ class ForecastService:
     def _apply_closure_rule(self, result: ForecastResult) -> ForecastResult:
         """Force the forecast to zero on days the site is known to be closed.
 
-        A closed restaurant sells nothing. That is a business fact rather than a
-        statistical pattern, and with only one or two closure days in two years of
-        history a tree model cannot learn it dependably - it did so on some training
-        cut-offs and not others, which would leave a manager ordering fresh stock for
+        A closed restaurant sells nothing. That is a business fact rather than a statistical
+        pattern, and with only one or two closure days in two years of history a tree model
+        cannot learn it dependably, which would leave a manager ordering fresh stock for
         Christmas Day. The rule is applied after prediction, recorded in the forecast
         metadata, and can be disabled with ``features.zero_demand_on_closed_days``.
         """

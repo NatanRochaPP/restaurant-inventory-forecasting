@@ -1,7 +1,7 @@
 """Reproduce the forecast-accuracy evidence.
 
-Runs the rolling-origin backtest that the dissertation reports (12 expanding-window
-folds, 7-day horizon) and writes the results table to ``outputs/``.
+Runs the rolling-origin backtest (12 expanding-window folds and a 7-day horizon by
+default) and writes the results table to ``outputs/``.
 
 Usage::
 

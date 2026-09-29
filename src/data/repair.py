@@ -7,12 +7,12 @@ negative quantity, and a run that stops on the first fault leaves the kitchen wi
 order at all. This module repairs what can be repaired, records what it did, and leaves
 the frame in the state validation expects.
 
-Two repairs are deliberate choices rather than obvious ones.
+Two of the repairs need explaining.
 
 *Missing days are filled, not dropped.* Lag and rolling features are built with positional
 ``groupby(...).shift(k)`` (see :mod:`src.features.demand_features`), so a hole in a
 product's dates silently moves ``lag7`` onto the wrong day. Filling the hole keeps the
-grid honest; the filled value is the median of the same weekday over the preceding four
+grid contiguous; the filled value is the median of the same weekday over the preceding four
 weeks, which is the best guess available from the product's own history, and every filled
 row is flagged so it can be excluded or inspected.
 

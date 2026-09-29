@@ -1,10 +1,8 @@
 """SQLite storage layer.
 
-SQLite is used deliberately: the project is a single-site prototype that must run on a
-student laptop with no server to install, and the whole database is a single file that
-can be shipped alongside the dissertation as reproducible evidence. Nothing in the schema
-depends on SQLite specifics, so a move to PostgreSQL would be mechanical - but there is
-no workload here that justifies it.
+SQLite is used because the project is a single-site prototype that must run on a laptop
+with no server to install, and the whole database is a single file. Nothing in the
+schema depends on SQLite specifics, so a move to PostgreSQL would be mechanical.
 
 The schema records what was decided and why, not just the numbers: every forecast carries
 the model that produced it, every recommendation carries its inputs, and manager overrides

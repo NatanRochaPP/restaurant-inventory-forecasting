@@ -1,8 +1,8 @@
 """Operational KPIs and the baseline-versus-AI comparison.
 
-Forecast accuracy is only an intermediate outcome. The research question asks whether
-forecast-driven replenishment reduces stockouts and food waste, so these are the numbers
-the dissertation reports: service level, waste, and the cost of both.
+Forecast accuracy is only an intermediate outcome. What matters operationally is whether
+forecast-driven replenishment reduces stockouts and food waste, so these are the outcome
+measures: service level, waste, and the cost of both.
 
 Every metric is computed from the simulator's per-SKU-day records, so the same code
 serves the aggregate comparison, the per-SKU breakdown and the dashboard.
@@ -175,7 +175,7 @@ def compare_simulations(
 
 
 def summarise_headline(comparison: pd.DataFrame, ai_label: str = "AI forecast + inventory policy") -> dict[str, float]:
-    """Extract the handful of figures quoted in the dissertation abstract."""
+    """Percentage improvement on the five headline KPIs, keyed by KPI."""
     indexed = comparison.set_index("key")
     keys = ["stockout_units", "waste_units", "unit_service_level", "total_cost", "average_inventory_units"]
     return {

@@ -1,6 +1,6 @@
 """Run the whole pipeline in order, with a log, as one command.
 
-The five batch scripts have to run in a fixed order: models are trained, the backtest
+The four batch scripts have to run in a fixed order: models are trained, the backtest
 measures forecast accuracy, the simulation replays the holdout and sweeps the frontier, and
 the figures are drawn from what those wrote. Running them by hand is fine for development
 and wrong for anything scheduled, because a step that fails in the middle leaves the
@@ -8,8 +8,8 @@ outputs half old and half new with nothing recording it.
 
 This runner executes the steps in order, stops at the first failure, writes everything both
 to the console and to a timestamped log under ``outputs/logs/``, and exits non-zero when a
-step fails so a scheduler notices. It does not schedule anything itself: a real deployment
-would trigger it overnight (see the deployment section of the report).
+step fails so a scheduler notices. It does not schedule anything itself;
+a deployment would trigger it overnight.
 
 Usage::
 

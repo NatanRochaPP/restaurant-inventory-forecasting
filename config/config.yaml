@@ -5,8 +5,7 @@
 # src/ modules or in the Streamlit app. Values are GBP and whole units unless stated.
 #
 # Cost figures are ASSUMPTIONS for a single casual-dining site, not observed data.
-# They are documented in README.md section "Assumptions" and are the numbers that must
-# be cited in the dissertation when reporting cost impact.
+# They are documented in README.md under "Assumptions".
 # =====================================================================================
 
 data:
@@ -34,7 +33,7 @@ forecast:
   seasonal_period: 7         # weekly seasonality
   # Width of the forecast uncertainty interval used for display and for safety stock.
   interval_service_level: 0.95
-  # Rolling-origin backtest settings (must match the AE1 baseline for comparability).
+  # Rolling-origin backtest settings: number of expanding-window folds and horizon.
   backtest:
     n_folds: 12
     horizon_days: 7
@@ -65,7 +64,7 @@ features:
 weather:
   # A real ordering decision uses a WEATHER FORECAST, not the realised temperature.
   # With perfect_foresight=false the future temperature is degraded by noise that grows
-  # with lead time, which prevents an optimistic bias in the reported results.
+  # with lead time, so the model has no better weather information than a manager.
   perfect_foresight: false
   forecast_noise_std_c: 1.2      # std dev at day+1
   noise_growth_per_day_c: 0.35   # extra std dev per additional day ahead
@@ -122,10 +121,9 @@ baseline:
   # A manager orders up to par for the days until the next delivery plus lead time.
   cover_days: null                   # null => lead time + review period, same as AI
   # A par level set from average usage embodies no explicit perishability reasoning, so
-  # the shelf-life cap is off by default. This is the one deliberate asymmetry between
-  # the two policies and it is reported as such: it lets the baseline buy availability
-  # with waste at high buffers, which the AI policy refuses to do. Set to true for the
-  # sensitivity run that removes the asymmetry.
+  # the shelf-life cap is off by default. This is the one intended asymmetry between the
+  # two policies: it lets the baseline buy availability with waste at high buffers, which
+  # the AI policy does not do. Set to true for a sensitivity run without the asymmetry.
   apply_shelf_life_cap: false
 
 sku_defaults:

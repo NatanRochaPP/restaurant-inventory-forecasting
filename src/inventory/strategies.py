@@ -170,9 +170,9 @@ class ParLevelStrategy(OrderingStrategy):
         apply_shelf_life_cap: Whether to apply the perishability cap. Defaults to the
             configured ``baseline.apply_shelf_life_cap`` (False), because an
             average-usage par level embodies no explicit shelf-life reasoning. This is
-            the one deliberate asymmetry between the two policies: it lets the baseline
+            the one intended asymmetry between the two policies: it lets the baseline
             buy availability with waste at high buffers, which the forecast-driven policy
-            refuses to do. Setting it to True removes the asymmetry for a sensitivity run.
+            does not do. Setting it to True removes the asymmetry for a sensitivity run.
     """
 
     name = "Manual par-level baseline"

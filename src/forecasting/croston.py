@@ -7,8 +7,7 @@ separate series - the size of non-zero demand, and the interval between demand e
 and forecasts the demand *rate*.
 
 Classic Croston is known to be positively biased; the Syntetos-Boylan Approximation
-(SBA) multiplies the rate by ``1 - alpha / 2`` to correct it. Both are provided so the
-dissertation can report the comparison.
+(SBA) multiplies the rate by ``1 - alpha / 2`` to correct it. Both variants are provided.
 """
 
 from __future__ import annotations

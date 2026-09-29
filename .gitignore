@@ -1,60 +1,22 @@
-# Python
+# Python caches, created when the code or the tests run
 __pycache__/
 *.py[cod]
-*.egg-info/
 .pytest_cache/
-.ipynb_checkpoints/
 
-# Virtual environments
+# Virtual environment created by the setup steps in README.md
 .venv/
-venv/
-env/
 
-# OS / editor
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
-
-# Office / OneDrive lock files
-~$*
-
-# Note: data/ and outputs/ are committed on purpose as reproducible evidence.
-# To keep the repo lean instead, uncomment the next two lines:
-# data/*.csv
-# outputs/*.png
-
-# Generated artefacts: both are rebuilt by scripts/train_models.py and
-# scripts/run_simulation.py, so they are not tracked.
+# SQLite database (data.database in config/config.yaml) and the trained model
+# (scripts/train_models.py), both rebuilt by the pipeline
 data/*.db
 models/*.joblib
 
-# Dissertation report tooling: kept locally only, never committed
-scripts/generate_dissertation_draft.py
-scripts/literature_text.py
-scripts/reflection_text.py
-scripts/references.py
-scripts/citations.py
-scripts/architecture_diagram.py
-scripts/capture_dashboard.py
-tests/test_dissertation_draft.py
-tests/test_references.py
-tests/test_citations.py
-docs/search_log.csv
-docs/*.docx
-
-# Pipeline run logs are per-run, not evidence.
+# Written by scripts/run_all.py: run logs, and the figures and tables rebuilt from
+# the CSVs in outputs/
 outputs/logs/
-
-# Local AI assistant instructions: kept on each machine, never committed
-CLAUDE.md
-
-# Report figures and tables: scripts/run_all.py (or generate_report_figures.py)
-# rebuilds all of them from the CSVs in outputs/, so they are not tracked.
 outputs/report/
 
-# AE1 prototype outputs: baseline_forecasting.py rewrites these every run and
-# nothing reads them; the reported results come from the pipeline's files above.
+# Written by baseline_forecasting.py on every run and not read by the pipeline
 outputs/fig1_weekly_seasonality.png
 outputs/fig2_holiday_spikes.png
 outputs/fig3_forecast_vs_actual.png

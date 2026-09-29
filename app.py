@@ -4,7 +4,7 @@ Run with::
 
     streamlit run app.py
 
-The app is deliberately thin: it renders state and collects input, while every
+The app is thin: it renders state and collects input, while every
 calculation lives in ``src`` (``app_services`` for orchestration, ``inventory`` for
 policy, ``explainability`` for the narratives). That separation is what allows the same
 numbers to be produced by the command-line scripts and asserted in the test suite.
@@ -618,7 +618,7 @@ def page_what_if(context: DashboardContext, as_of: pd.Timestamp) -> None:
     stock = stock_positions(context, as_of)
     base_stock = round(float(stock.set_index("sku").at[sku, "on_hand"]), 1)
     # The default service level is the SKU's segment-adjusted target, so leaving the
-    # slider alone genuinely means "no change" rather than silently overriding it.
+    # slider alone means "no change" rather than silently overriding it.
     segment = context.segments.get(sku)
     base_service_level = (
         service_level_for_segment(segment, context.config.inventory.service_level)
@@ -639,7 +639,7 @@ def page_what_if(context: DashboardContext, as_of: pd.Timestamp) -> None:
     lead_time = controls[2].slider("Supplier lead time (days)", 0, 7, base_lead_time)
     current_stock = controls[2].number_input("Current stock (units)", min_value=0.0, value=base_stock, step=1.0)
 
-    # Only fields the manager actually moved become overrides.
+    # Only fields the manager changed become overrides.
     changed_service = abs(service_level / 100 - base_service_level) > 0.005
     scenario = Scenario(
         label="Scenario",

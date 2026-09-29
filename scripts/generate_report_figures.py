@@ -1,8 +1,7 @@
-"""Generate print-quality figures and tables for the dissertation write-up.
+"""Generate print-quality figures and tables from the pipeline outputs.
 
-Every figure in the report is produced here from the CSV evidence in ``outputs/``, so a
-figure can never drift from the numbers behind it: re-run the pipeline, re-run this, and
-the report's figures update together.
+Every figure is drawn from the CSV files in ``outputs/``, so a figure cannot drift from
+the numbers behind it: re-running the pipeline and then this script updates all of them.
 
 Usage::
 
@@ -194,7 +193,7 @@ def figure_forecast_example(predictions: pd.DataFrame, sku: str = "Fries (Potato
 
 
 def figure_frontier(frontier: pd.DataFrame, matched: pd.DataFrame) -> None:
-    """The central evidence figure: waste against service level for both policies."""
+    """Waste against service level for both policies across their tuning range."""
     fig, ax = plt.subplots(figsize=(8.2, 5.0))
     curves = {}
     for label, colour, marker in [(BASELINE_LABEL, BLUE, "o"), (AI_LABEL, ORANGE, "D")]:
@@ -207,7 +206,7 @@ def figure_frontier(frontier: pd.DataFrame, matched: pd.DataFrame) -> None:
     ax.set_ylabel("Food waste over the six-month holdout (units)")
 
     # The baseline's highest-buffer runs waste an order of magnitude more than anything
-    # else, which would flatten the region where the two policies actually differ. Clip
+    # else, which would flatten the region where the two policies differ. Clip
     # the axis to that region and mark the off-scale points rather than dropping them.
     ceiling = float(curves[AI_LABEL]["waste_units"].max()) * 2.7
     ax.set_ylim(0, ceiling)
@@ -411,7 +410,7 @@ def figure_drivers() -> None:
 
 def write_tables(accuracy, comparison, matched, matched_waste, segmentation,
                  selection, by_sku_ai, by_sku_base) -> None:
-    """Write every report table as CSV and as Markdown ready to paste."""
+    """Write every table as CSV and as Markdown."""
     tables = {
         "table1_forecast_accuracy": accuracy.reset_index(),
         "table2_operational_outcomes": comparison[

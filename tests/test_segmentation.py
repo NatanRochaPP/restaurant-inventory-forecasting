@@ -215,10 +215,10 @@ class TestForecastService:
             assert used.refit_anchor(day) == anchor
 
     def test_forecast_is_identical_whatever_was_forecast_before(self, synthetic_panel, config):
-        """Regression: an earlier forecast used to leave a model that a later date reused.
+        """A later date is never served by a model left behind by an earlier forecast.
 
-        Forecasting 8 April and then 10 April served 10 April from the 8 April model, while a
-        fresh service fitted at 10 April itself, so the same date gave two forecasts.
+        Forecasting 8 April and then 10 April must give the same 10 April forecast as a fresh
+        service, which fits at 10 April itself.
         """
         from src.forecasting.service import ForecastService
 
@@ -241,7 +241,7 @@ class TestForecastService:
 
 @pytest.mark.slow
 class TestForecastDeterminismEval:
-    """Property check that generalises the refit regression beyond the dates it names."""
+    """The same property over many dates and request orders."""
 
     def test_forecasts_match_fresh_ones_in_any_order(self, synthetic_panel, config):
         """Whatever order dates are forecast in, and whether or not the memo serves them,
@@ -264,10 +264,10 @@ class TestForecastDeterminismEval:
 
 
 def test_lazy_model_choices_do_not_depend_on_request_order(synthetic_panel, config):
-    """Regression: a routing chosen lazily at an earlier date was reused for later dates.
+    """A routing chosen lazily for an earlier date is not reused for a later one.
 
-    Forecasting 20 February and then 25 April routed Smooth SKU with the February
-    selection, while a fresh service selected for 25 April, so one date gave two forecasts.
+    Forecasting 20 February and then 25 April must route Smooth SKU as a fresh service
+    would for 25 April.
     """
     from src.forecasting.service import ForecastService
 
@@ -281,7 +281,7 @@ def test_lazy_model_choices_do_not_depend_on_request_order(synthetic_panel, conf
 
 
 def test_a_date_just_after_the_data_start_can_still_be_forecast(synthetic_panel, config):
-    """Regression: an anchor a few days after the first fittable date had too little history."""
+    """A date just after the first fittable date is forecast from a model fitted at that date."""
     from src.forecasting.service import ForecastService
 
     day = pd.Timestamp("2025-01-30")

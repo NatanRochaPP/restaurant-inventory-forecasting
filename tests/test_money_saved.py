@@ -54,7 +54,7 @@ def test_matched_cost_saved_requires_cost_columns():
 
 @pytest.mark.skipif(not (OUTPUTS / "simulation_daily_ai.csv").exists(), reason="pipeline outputs not generated")
 def test_saving_matches_the_recorded_simulation_runs():
-    # Eval against the real six-month replay: the savings must reproduce the published comparison.
+    # Checked against the six-month replay: the savings must match the recorded comparison.
     base = compute_kpis(pd.read_csv(OUTPUTS / "simulation_daily_baseline.csv", parse_dates=["date"]))
     ai = compute_kpis(pd.read_csv(OUTPUTS / "simulation_daily_ai.csv", parse_dates=["date"]))
     saved = money_saved(base, ai)

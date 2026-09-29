@@ -77,7 +77,7 @@ class TestInventoryPosition:
         assert inventory_position(30, 10) == 40.0
 
     def test_stock_in_transit_is_not_ignored(self):
-        """The classic double-ordering bug: on-order stock must count."""
+        """On-order stock counts towards the position, so it is not ordered twice."""
         assert inventory_position(0, 100) == 100.0
 
     @pytest.mark.parametrize("args", [(-1, 0, 0), (0, -1, 0), (0, 0, -1)])

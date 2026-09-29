@@ -1,6 +1,6 @@
 """Forecast accuracy metrics.
 
-The three metrics reported in the AE1 progress report are preserved exactly:
+Three accuracy metrics are computed:
 
 sMAPE
     Symmetric mean absolute percentage error, bounded and defined when demand is zero

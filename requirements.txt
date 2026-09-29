@@ -1,4 +1,4 @@
-# Core dependencies (versions used to produce the reported results)
+# Core dependencies (the versions the results were produced with)
 pandas==3.0.1
 numpy==2.4.3
 scipy==1.17.1

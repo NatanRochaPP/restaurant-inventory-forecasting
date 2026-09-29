@@ -2,9 +2,8 @@
 
 One model is trained across all SKUs with the SKU identity as a categorical feature, so
 that slow movers borrow strength from the calendar and weather patterns learned on fast
-movers. This reproduces the AE1 baseline configuration
-(``HistGradientBoostingRegressor``, 300 iterations, learning rate 0.05, depth 6, seed
-42) but fixes the ``roll28`` construction and freezes features at the forecast origin.
+movers. It is a ``HistGradientBoostingRegressor`` (300 iterations, learning rate 0.05,
+depth 6 and seed 42 by default), and its features are frozen at the forecast origin.
 
 Forecast uncertainty is estimated on a held-out tail of the training window rather than
 in-sample, because in-sample residuals of a boosted model badly understate error and

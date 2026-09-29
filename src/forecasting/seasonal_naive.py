@@ -11,8 +11,8 @@ from src.forecasting.base import ForecastResult, UnivariateForecastModel
 class SeasonalNaiveForecast(UnivariateForecastModel):
     """Forecast day ``t`` with the observation from ``t - seasonal_period``.
 
-    This is the benchmark the dissertation reports improvements against, and the same
-    method that defines the MASE denominator.
+    This is the benchmark the other models are compared against, and the same method that
+    defines the MASE denominator.
 
     Args:
         seasonal_period: Length of the seasonal cycle in days (7 for weekly).

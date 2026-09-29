@@ -3,8 +3,7 @@
 The policy layer knows nothing about how the forecast was produced. It receives a daily
 demand forecast, an uncertainty estimate and the current stock position, and returns the
 levels that define a replenishment decision. That separation is what allows the
-simulation to hold the policy fixed while swapping the forecast (AI versus manual), which
-is the comparison the research question needs.
+simulation to hold the policy fixed while swapping the forecast (AI versus manual).
 
 Two policies are supported:
 
@@ -206,14 +205,14 @@ class SsPolicy(InventoryPolicy):
 class ParLevelPolicy(InventoryPolicy):
     """Par-level policy representing current manual practice.
 
-    This is the baseline the research question compares against. A manager sets a par
-    level from recent average usage - not a forecast - and tops up to it on each delivery
-    day, adding a flat percentage buffer for comfort:
+    This is the manual baseline the forecast-driven policy is compared against. A manager
+    sets a par level from recent average usage - not a forecast - and tops up to it on each
+    delivery day, adding a flat percentage buffer for comfort:
 
         par = average daily usage x cover days x (1 + buffer)
 
     It has no view of the coming weekend, bank holidays, weather or promotions, which is
-    precisely the gap the forecasting system is meant to close. Because the buffer is a
+    the gap the forecasting system is meant to close. Because the buffer is a
     fixed percentage rather than a function of forecast error, it over-covers stable
     items and under-covers volatile ones.
 

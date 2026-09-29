@@ -64,7 +64,7 @@ class TestDemandFeatures:
             )
 
     def test_rolling_mean_does_not_cross_sku_boundaries(self, synthetic_panel, config):
-        """Regression test for the AE1 bug where rolling() ran over the whole frame."""
+        """Rolling statistics stay within each SKU instead of running over the whole frame."""
         feats = engineer_features(synthetic_panel, config)
         for sku, grp in feats.groupby("sku"):
             grp = grp.sort_values("date").reset_index(drop=True)

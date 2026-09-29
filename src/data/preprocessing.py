@@ -8,7 +8,7 @@ data leakage:
 
 Every backtest, simulation step and dashboard forecast obtains its training data
 through :func:`history_as_of`, so the rule is enforced in one place instead of being
-re-implemented (and eventually broken) at each call site.
+re-implemented at each call site.
 """
 
 from __future__ import annotations
@@ -93,7 +93,7 @@ def rolling_origins(
     """Compute expanding-window rolling-origin cut points.
 
     Folds are laid out so that the final fold's evaluation window ends on the last
-    available date, matching the AE1 baseline experiment.
+    available date.
 
     Args:
         dates: The full sorted date index of the dataset.
