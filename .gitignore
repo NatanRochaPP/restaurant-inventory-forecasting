@@ -52,3 +52,12 @@ CLAUDE.md
 # Report figures and tables: scripts/run_all.py (or generate_report_figures.py)
 # rebuilds all of them from the CSVs in outputs/, so they are not tracked.
 outputs/report/
+
+# AE1 prototype outputs: baseline_forecasting.py rewrites these every run and
+# nothing reads them; the reported results come from the pipeline's files above.
+outputs/fig1_weekly_seasonality.png
+outputs/fig2_holiday_spikes.png
+outputs/fig3_forecast_vs_actual.png
+outputs/fig4_gantt.png
+outputs/results_summary.json
+outputs/results_table.csv
